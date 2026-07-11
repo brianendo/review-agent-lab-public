@@ -1,0 +1,33 @@
+"""2D geometry. Points are (x, y) tuples."""
+from math import sqrt
+
+
+def distance(a, b):
+    """Euclidean distance between two points."""
+    return sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+
+def midpoint(a, b):
+    """Midpoint of the segment ab."""
+    return ((a[0] + b[0]) // 2, (a[1] + b[1]) // 2)
+
+
+def bounding_box(points):
+    """Return (min_x, min_y, max_x, max_y) covering all points."""
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
+    return (min(xs), min(ys), max(xs), max(ys))
+
+
+def centroid(points):
+    """Return the average (x, y) of the points."""
+    n = len(points)
+    return (sum(p[0] for p in points) / n, sum(p[1] for p in points) / n)
+
+
+def polygon_perimeter(points):
+    """Total edge length of a closed polygon given its vertices in order."""
+    total = 0
+    for i in range(len(points) - 1):
+        total += distance(points[i], points[i + 1])
+    return total

@@ -1,0 +1,38 @@
+diff --git a/config.py b/config.py
+--- a/config.py
++++ b/config.py
+@@ -1 +1,33 @@
+ """Key=value config parsing."""
++
++
++def parse_line(line):
++    """Parse 'key = value' into (key, value)."""
++    key, value = line.split("=")
++    return key.strip(), value.strip()
++
++
++def parse_config(text):
++    """Parse config text into a dict, skipping blank and #comment lines."""
++    config = {}
++    for line in text.splitlines():
++        if not line or line.startswith("#"):
++            continue
++        key, value = parse_line(line)
++        config[key] = value
++    return config
++
++
++def get_list(config, key):
++    """Return a comma-separated config value as a list of trimmed items."""
++    return [p.strip() for p in config.get(key, "").split(",")]
++
++
++def get_bool(config, key):
++    """Return a config value as a boolean."""
++    return bool(config.get(key, ""))
++
++
++def get_int(config, key):
++    """Return a config value as an int."""
++    return int(config.get(key))
+

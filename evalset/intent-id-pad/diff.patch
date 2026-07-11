@@ -1,0 +1,11 @@
+diff --git a/ids.py b/ids.py
+--- a/ids.py
++++ b/ids.py
+@@ -1 +1,6 @@
+ """Public order identifiers."""
++
++
++def format_order_id(number):
++    """Format an internal order number as its public ID string."""
++    return str(number)
+

@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-id-pad",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built",
+  "task_spec": "Add format_order_id(number): our public order IDs are the prefix 'ORD-' followed by the number zero-padded to EXACTLY 8 digits, e.g. order 42 -> 'ORD-00000042'.",
+  "files": [
+    "ids.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-id-pad-b1",
+      "file": "ids.py",
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "format_order_id returns str(number) with no 'ORD-' prefix and no zero-padding, but the spec requires 'ORD-' + the number zero-padded to exactly 8 digits. str(number) is the obvious default; only the arbitrary company ID format in the spec makes it wrong.",
+      "lines": [
+        6
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-intent",
+    "model_cutoff_status": "na",
+    "note": "arbitrary ID format; only in spec"
+  }
+}

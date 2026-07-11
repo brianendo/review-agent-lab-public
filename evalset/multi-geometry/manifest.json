@@ -1,0 +1,59 @@
+{
+  "diff_id": "multi-geometry",
+  "repo": "synthetic-multi",
+  "source_commit": "hand-built",
+  "task_spec": "Add geometry helpers: distance, midpoint, bounding_box, centroid, polygon_perimeter.",
+  "files": [
+    "geometry.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "multi-geometry-b1",
+      "file": "geometry.py",
+      "category": "off-by-one",
+      "severity": "medium",
+      "description": "midpoint uses integer division //, truncating coordinates; the midpoint of (0,0) and (1,1) is (0,0) instead of (0.5, 0.5). Should use / 2.",
+      "lines": [
+        12
+      ]
+    },
+    {
+      "bug_id": "multi-geometry-b2",
+      "file": "geometry.py",
+      "category": "error-handling",
+      "severity": "medium",
+      "description": "bounding_box calls min()/max() on empty lists when points is empty, raising ValueError instead of handling the empty case.",
+      "lines": [
+        19
+      ]
+    },
+    {
+      "bug_id": "multi-geometry-b3",
+      "file": "geometry.py",
+      "category": "error-handling",
+      "severity": "medium",
+      "description": "centroid divides by n = len(points) with no empty guard, raising ZeroDivisionError on [].",
+      "lines": [
+        24
+      ]
+    },
+    {
+      "bug_id": "multi-geometry-b4",
+      "file": "geometry.py",
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "polygon_perimeter sums edges points[i]->points[i+1] for i in range(len-1), which is the perimeter of an OPEN path -- it omits the closing edge from the last vertex back to the first, understating a closed polygon's perimeter.",
+      "lines": [
+        31
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-multi",
+    "model_cutoff_status": "na",
+    "note": "5-function geometry module, graded bugs; I2b process-context case"
+  },
+  "coder_trace": "",
+  "_trace_pending": "defending trace not generated: BadRequestError"
+}

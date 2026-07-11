@@ -1,0 +1,59 @@
+{
+  "diff_id": "multi-parse",
+  "repo": "synthetic-multi",
+  "source_commit": "hand-built",
+  "task_spec": "Add config helpers: parse_line, parse_config, get_list, get_bool, get_int.",
+  "files": [
+    "config.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "multi-parse-b1",
+      "file": "config.py",
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "parse_line uses line.split(\"=\") with no maxsplit, so a value containing '=' (base64, query strings, connection URLs) raises 'too many values to unpack', and a line without '=' also fails to unpack. Should be line.split(\"=\", 1) with a guard.",
+      "lines": [
+        6
+      ]
+    },
+    {
+      "bug_id": "multi-parse-b2",
+      "file": "config.py",
+      "category": "off-by-one",
+      "severity": "medium",
+      "description": "get_list returns [''] (a one-element list containing an empty string) when the key is missing or empty, because ''.split(',') == ['']. It should return an empty list for a missing/empty value.",
+      "lines": [
+        23
+      ]
+    },
+    {
+      "bug_id": "multi-parse-b3",
+      "file": "config.py",
+      "category": "logic-inversion",
+      "severity": "high",
+      "description": "get_bool returns bool() of the raw string, so any non-empty value is True -- including 'false', 'no', and '0'. It must parse the string's meaning, not its truthiness.",
+      "lines": [
+        28
+      ]
+    },
+    {
+      "bug_id": "multi-parse-b4",
+      "file": "config.py",
+      "category": "error-handling",
+      "severity": "medium",
+      "description": "get_int calls config.get(key) with no default; a missing key yields None and int(None) raises TypeError instead of a clean default or KeyError.",
+      "lines": [
+        33
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-multi",
+    "model_cutoff_status": "na",
+    "note": "5-function config module, graded bugs; I2b process-context case"
+  },
+  "coder_trace": "",
+  "_trace_pending": "defending trace not generated: BadRequestError"
+}

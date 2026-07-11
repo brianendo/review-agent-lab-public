@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-batch-size",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built",
+  "task_spec": "Add batches(records): yield successive batches for upload. The upstream API rejects any request with more than 500 records, so batches MUST be exactly 500 (or fewer).",
+  "files": [
+    "upload.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-batch-size-b1",
+      "file": "upload.py",
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "BATCH_SIZE is 1000, but the API's hard limit is 500 records per request, so every full batch will be rejected. 1000 is an unremarkable default; only the arbitrary API limit in the spec makes it wrong.",
+      "lines": [
+        3
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-intent",
+    "model_cutoff_status": "na",
+    "note": "arbitrary batch-size limit; only in spec"
+  }
+}
