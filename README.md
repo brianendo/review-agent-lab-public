@@ -37,6 +37,7 @@ more thinking.*
 ## Read more
 
 - **[WRITEUP.md](WRITEUP.md)** — the full narrative (motivation, rig, findings, limits)
+- **[PUBLIC_RESULTS.md](PUBLIC_RESULTS.md)** — headline findings measured on THIS public evalset
 - **[RESULTS.md](RESULTS.md)** — the numbers and tables
 - **[INTERPRETATION.md](INTERPRETATION.md)** — plain-language reading + the Cognition verdict
 - **[NOTICE.md](NOTICE.md)** — third-party OSS snapshots and their licenses
