@@ -1,0 +1,28 @@
+{
+  "diff_id": "subtle-bsearch",
+  "repo": "synthetic-multi",
+  "source_commit": "hand-built subtle case",
+  "task_spec": "Add search_insert(arr, target): binary search returning the index of target or its insertion point in ascending-sorted arr.",
+  "files": [
+    "search.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "subtle-bsearch-b1",
+      "file": "search.py",
+      "lines": [
+        11
+      ],
+      "category": "off-by-one",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "When arr[mid] < target the code sets lo = mid instead of lo = mid + 1. If mid == lo (which happens when hi == lo+1), lo never advances and the while loop spins forever (infinite loop / hang). Correct is lo = mid + 1."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-multi",
+    "model_cutoff_status": "na",
+    "note": "subtle algorithmic infinite-loop bug; hard to verify without simulating"
+  }
+}

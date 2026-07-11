@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-tiebreak-id",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built arbitrary-rule case",
+  "task_spec": "Add rank(items): order by score descending. Ties (equal score) MUST be broken by ascending id (lowest id first) so the ordering is deterministic across shards.",
+  "files": [
+    "ranking.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-tiebreak-id-b1",
+      "file": "ranking.py",
+      "lines": [
+        6
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "rank sorts only by -score, so ties fall back to input order (Python's stable sort), not the required ascending-id tie-break. Correct key: (-it['score'], it['id']). Sorting by score alone looks correct; only the arbitrary tie-break rule (spec only) reveals the bug."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-arbitrary",
+    "model_cutoff_status": "na",
+    "note": "arbitrary rule lives ONLY in task_spec; not derivable from code or world knowledge"
+  }
+}

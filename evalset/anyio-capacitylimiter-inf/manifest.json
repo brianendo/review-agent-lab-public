@@ -1,0 +1,29 @@
+{
+  "diff_id": "anyio-capacitylimiter-inf",
+  "repo": "anyio",
+  "source_commit": "26ab19baf7dc5f7ce39cbcd6ce2d1058fc6d2796 (reversed fix)",
+  "commit_date": "2026-06-27",
+  "task_spec": "CapacityLimiter.total_tokens must accept any infinite float (math.inf, float('inf')), not only the singleton math.inf object. Setting it to infinity outside an event loop must not raise TypeError. (agronholm/anyio#1189)",
+  "files": [
+    "src/anyio/_core/_synchronization.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "anyio-capacitylimiter-inf-b1",
+      "file": "src/anyio/_core/_synchronization.py",
+      "lines": [
+        685
+      ],
+      "category": "logic-inversion",
+      "severity": "medium",
+      "description": "total_tokens setter uses identity `value is not math.inf` to allow infinity. Only the singleton math.inf passes; any other infinite float (float('inf'), 1e400, a computed inf) is not the same object, so `value is not math.inf` is True and it raises TypeError('must be an int or math.inf') for a legitimately infinite value. Correct is `not math.isinf(value)` (value comparison).",
+      "seed_note": "NATURAL post-cutoff bug: inverse of agronholm/anyio PR #1189 (merged 2026-06)."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss",
+    "model_cutoff_status": "post",
+    "note": "public repo, fix merged 2026-06-27 after the 2026-01-31 model cutoff; post-cutoff, contamination-clean."
+  }
+}

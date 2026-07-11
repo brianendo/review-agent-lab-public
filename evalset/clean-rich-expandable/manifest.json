@@ -1,0 +1,17 @@
+{
+  "diff_id": "clean-rich-expandable",
+  "repo": "rich",
+  "source_commit": "de4a8bd",
+  "task_spec": "lazy is_expandable",
+  "files": [
+    "rich/console.py"
+  ],
+  "bugs": [],
+  "commit_date": "2026-04-11",
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss-clean",
+    "model_cutoff_status": "post",
+    "note": "real OSS change merged 2026-04-11 (post-cutoff), presumed correct; measures false-positive rate"
+  }
+}

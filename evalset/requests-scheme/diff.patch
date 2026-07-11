@@ -1,0 +1,31 @@
+diff --git a/requests/exceptions.py b/requests/exceptions.py
+--- a/requests/exceptions.py
++++ b/requests/exceptions.py
+@@ -80,11 +80,11 @@
+ 
+ 
+ class MissingSchema(RequestException, ValueError):
+-    """The URL scheme (e.g. http or https) is missing."""
++    """The URL schema (e.g. http or https) is missing."""
+ 
+ 
+ class InvalidSchema(RequestException, ValueError):
+-    """The URL scheme provided is either invalid or unsupported."""
++    """See defaults.py for valid schemas."""
+ 
+ 
+ class InvalidURL(RequestException, ValueError):
+
+diff --git a/requests/models.py b/requests/models.py
+--- a/requests/models.py
++++ b/requests/models.py
+@@ -386,7 +386,7 @@
+             raise InvalidURL(*e.args)
+ 
+         if not scheme:
+-            error = ("Invalid URL {0!r}: No scheme supplied. Perhaps you meant http://{0}?")
++            error = ("Invalid URL {0!r}: No schema supplied. Perhaps you meant http://{0}?")
+             error = error.format(to_native_string(url, 'utf8'))
+ 
+             raise MissingSchema(error)
+

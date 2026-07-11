@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-retry-count",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built arbitrary-rule case",
+  "task_spec": "Add fetch_with_retry(client, url): our upstream is flaky and needs up to 5 attempts, so the fetch MUST make exactly 5 attempts before giving up and raising the last error.",
+  "files": [
+    "fetch.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-retry-count-b1",
+      "file": "fetch.py",
+      "lines": [
+        3
+      ],
+      "category": "intent-spec-violation",
+      "severity": "medium",
+      "description": "MAX_ATTEMPTS is 3, but the spec requires exactly 5 attempts before giving up. Three retries is an unremarkable default; only the arbitrary count from the spec (5) makes 3 wrong."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-arbitrary",
+    "model_cutoff_status": "na",
+    "note": "arbitrary rule lives ONLY in task_spec; not derivable from code or world knowledge"
+  }
+}

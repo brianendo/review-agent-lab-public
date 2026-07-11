@@ -1,0 +1,24 @@
+{
+  "diff_id": "sample-001",
+  "repo": "sample",
+  "task_spec": "Add total_pnl and average_pnl helpers to the backtest engine",
+  "bugs": [
+    {
+      "bug_id": "sample-001-b1",
+      "file": "backtest/engine.py",
+      "lines": [
+        14,
+        15
+      ],
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "range(len(candles) - 1) excludes the final candle, so total_pnl understates PnL by the last bar (and misbehaves on empty input via len-1 == -1)."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic",
+    "model_cutoff_status": "na",
+    "note": "freshly authored for this evalset"
+  }
+}

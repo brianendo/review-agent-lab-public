@@ -1,0 +1,28 @@
+{
+  "diff_id": "hard-discount-tacit",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Add compute_discount(line_items): the coupon is 10% of the cart, capped at $20 (2000 cents). IMPORTANT: gift-card line items (item['type'] == 'gift_card') are never discountable and must be excluded from the discountable base.",
+  "files": [
+    "discount.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-discount-tacit-b1",
+      "file": "discount.py",
+      "lines": [
+        14
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "compute_discount builds the discountable base from ALL line items, including gift cards, but per the spec gift-card items (item['type']=='gift_card') must be excluded from the discountable base. Correct: base = sum(price for item in line_items if item['type'] != 'gift_card'). Locally the 10%-capped calculation is perfectly reasonable; only the external gift-card rule (in the task spec, nowhere in the repo) makes it wrong.",
+      "seed_note": "HARD (tacit external rule): the gift-card exclusion exists only in the task spec. I0 should MISS, I2a should CATCH."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "freshly authored, calibrated to be hard to JUDGE (bug is locally plausible)"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "diff_id": "pydantic-falsy-alias",
+  "repo": "pydantic",
+  "source_commit": "4ec2d8e334dcd79671530235d21110c36d0fc551 (reversed fix)",
+  "commit_date": "2026-06-01",
+  "task_spec": "AliasGenerator handling must distinguish 'no alias / no generator' (None) from a validly-produced falsy alias (e.g. empty string). Use 'is not None' checks, not truthiness, so falsy generated aliases are not silently dropped. (pydantic/pydantic#13248)",
+  "files": [
+    "pydantic/aliases.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "pydantic-falsy-alias-b1",
+      "file": "pydantic/aliases.py",
+      "lines": [
+        116,
+        118
+      ],
+      "category": "logic-inversion",
+      "severity": "medium",
+      "description": "Alias handling uses truthiness instead of `is not None`. `if alias_generator := getattr(...)` and `if alias and not isinstance(...)` treat a validly-produced but falsy alias (e.g. empty string '') as absent, so a falsy generated alias is silently dropped and its type is never validated. Correct is explicit `is not None` checks.",
+      "seed_note": "NATURAL post-cutoff bug: inverse of pydantic/pydantic PR #13248 (merged 2026-06)."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss",
+    "model_cutoff_status": "post",
+    "note": "public repo, fix merged 2026-06-01 after the 2026-01-31 model cutoff; post-cutoff, contamination-clean."
+  }
+}

@@ -1,0 +1,1 @@
+"""Memoized scaled distance."""

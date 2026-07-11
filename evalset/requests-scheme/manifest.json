@@ -1,0 +1,29 @@
+{
+  "diff_id": "requests-scheme",
+  "repo": "requests",
+  "source_commit": "2b06a952 (reversed fix)",
+  "task_spec": "The first component of a URL is the 'scheme' (e.g. http, https), not the 'schema'. User-facing error messages and exception docstrings must call it the scheme. (psf/requests#5984)",
+  "files": [
+    "requests/exceptions.py",
+    "requests/models.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "requests-scheme-b1",
+      "file": "requests/models.py",
+      "lines": [
+        389
+      ],
+      "category": "intent-spec-violation",
+      "severity": "low",
+      "description": "The user-facing error message says 'No schema supplied' but the correct term for a URL's http/https prefix is 'scheme', not 'schema'. This confuses users (schema errors mean something else) and the linked issue #5984 asks for the wording to be corrected. Locally the string is not a code defect; only the convention/issue makes 'schema' wrong.",
+      "seed_note": "NATURAL bug: inverse of the real fix in psf/requests PR #6017 (closes #5984)."
+    }
+  ],
+  "provenance": {
+    "class": "contaminated",
+    "source": "public-oss",
+    "model_cutoff_status": "pre",
+    "note": "public repo, PR merged before the Jan-2026 model cutoff; likely memorized. Treat as a contamination control, exclude from headline recall."
+  }
+}

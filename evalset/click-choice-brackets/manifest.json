@@ -1,0 +1,29 @@
+{
+  "diff_id": "click-choice-brackets",
+  "repo": "click",
+  "source_commit": "09195f6a92 (reversed fix)",
+  "commit_date": "2026-06-12",
+  "task_spec": "A parameter whose type already brackets its metavar (e.g. Choice renders [a|b|c]) must NOT be wrapped in a second pair of brackets in the usage synopsis -- an optional Choice should read [a|b|c], not [[a|b|c]]. (pallets/click#3578)",
+  "files": [
+    "src/click/core.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "click-choice-brackets-b1",
+      "file": "src/click/core.py",
+      "lines": [
+        3576
+      ],
+      "category": "logic-inversion",
+      "severity": "low",
+      "description": "make_metavar wraps an optional parameter's metavar in [ ] whenever not self.required, without checking whether the type already bracketed it. For Choice/DateTime (which render their metavar as [a|b|c]) this produces a double-bracketed [[a|b|c]] in the usage synopsis. The fix guards with `and not already_bracketed`.",
+      "seed_note": "NATURAL post-cutoff bug: inverse of pallets/click PR #3578."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss",
+    "model_cutoff_status": "post",
+    "note": "public repo, fix merged 2026-06-12 after the 2026-01-31 model cutoff; post-cutoff, contamination-clean."
+  }
+}

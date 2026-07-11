@@ -1,0 +1,28 @@
+{
+  "diff_id": "httpx-cancel-close",
+  "repo": "httpx",
+  "source_commit": "3350d7e6 (reversed fix)",
+  "task_spec": "Responses must be closed if any BaseException (including asyncio.CancelledError / cancellation) is raised while sending a request, not only ordinary Exceptions. Otherwise a cancelled request leaks its connection. (encode/httpx#2139 / #2156)",
+  "files": [
+    "httpx/_client.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "httpx-cancel-close-b1",
+      "file": "httpx/_client.py",
+      "lines": [
+        903
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "description": "The send paths catch `except Exception` when closing the response on error, but asyncio.CancelledError (and KeyboardInterrupt) are BaseException, not Exception. So when a request is cancelled mid-send, the except block is skipped, response.close()/aclose() never runs, and the connection leaks. Correct is `except BaseException`. The same pattern repeats in _send_handling_auth and _send_handling_redirects for both the sync Client and AsyncClient (6 sites).",
+      "seed_note": "NATURAL bug: inverse of the real fix in encode/httpx PR #2156 (closes #2139)."
+    }
+  ],
+  "provenance": {
+    "class": "contaminated",
+    "source": "public-oss",
+    "model_cutoff_status": "pre",
+    "note": "public repo, PR merged before the Jan-2026 model cutoff; likely memorized. Treat as a contamination control, exclude from headline recall."
+  }
+}

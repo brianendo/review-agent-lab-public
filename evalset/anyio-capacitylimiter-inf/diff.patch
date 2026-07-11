@@ -1,0 +1,13 @@
+diff --git a/src/anyio/_core/_synchronization.py b/src/anyio/_core/_synchronization.py
+--- a/src/anyio/_core/_synchronization.py
++++ b/src/anyio/_core/_synchronization.py
+@@ -682,7 +682,7 @@
+ 
+     @total_tokens.setter
+     def total_tokens(self, value: float) -> None:
+-        if not isinstance(value, int) and not math.isinf(value):
++        if not isinstance(value, int) and value is not math.inf:
+             raise TypeError("total_tokens must be an int or math.inf")
+         elif value < 0:
+             raise ValueError("total_tokens must be >= 0")
+

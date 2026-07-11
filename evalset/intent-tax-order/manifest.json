@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-tax-order",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built",
+  "task_spec": "Add order_total(items, coupon_bps): our billing rule applies the coupon to the PRE-TAX subtotal (discount first), THEN adds 8% tax on the discounted amount. The order matters because tax is owed on what the customer actually pays.",
+  "files": [
+    "totals.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-tax-order-b1",
+      "file": "totals.py",
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "order_total taxes the full subtotal first and applies the coupon afterward, but the spec requires discount-BEFORE-tax (coupon on the pre-tax subtotal, then tax the discounted amount). The two orders give different totals; tax-first over-charges tax. Both orderings are locally plausible; only the billing rule in the spec picks one.",
+      "lines": [
+        14
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-intent",
+    "model_cutoff_status": "na",
+    "note": "arbitrary order-of-operations rule; only in spec"
+  }
+}

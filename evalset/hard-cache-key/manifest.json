@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-cache-key",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built",
+  "task_spec": "Add scaled_distance(point, scale): return the L1 norm of point multiplied by scale. Memoize for speed since points repeat.",
+  "files": [
+    "distance.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-cache-key-b1",
+      "file": "distance.py",
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "The memo is keyed on point alone, but the cached value bakes in scale (norm * scale). A second call with the same point but a different scale returns the first call's stale result. The cache key must include scale (or cache only the scale-independent norm).",
+      "lines": [
+        9
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "cache keyed on subset of inputs; subtle state bug"
+  }
+}

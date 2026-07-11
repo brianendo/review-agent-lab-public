@@ -1,0 +1,17 @@
+{
+  "diff_id": "clean-click-zfs",
+  "repo": "click",
+  "source_commit": "9f9ae45",
+  "task_spec": "Accept ZFS error-message for non-UTF-8 names\n\nCloses: #2634",
+  "files": [
+    "tests/test_types.py"
+  ],
+  "bugs": [],
+  "commit_date": "2026-05-28",
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss-clean",
+    "model_cutoff_status": "post",
+    "note": "real OSS change merged 2026-05-28 (post-cutoff), presumed correct; measures false-positive rate"
+  }
+}

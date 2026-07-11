@@ -1,0 +1,11 @@
+diff --git a/ranking.py b/ranking.py
+--- a/ranking.py
++++ b/ranking.py
+@@ -1 +1,6 @@
+ """Result ranking."""
++
++
++def rank(items):
++    """Order items best-first. Each item has an int 'score' and an int 'id'."""
++    return sorted(items, key=lambda it: -it["score"])
+

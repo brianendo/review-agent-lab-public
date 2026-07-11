@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-mutable-default",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built",
+  "task_spec": "Add add_to_batch(item, batch=None): append item to the batch and return it; if no batch is passed, start a fresh empty one.",
+  "files": [
+    "batch.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-mutable-default-b1",
+      "file": "batch.py",
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "add_to_batch uses a mutable default argument batch=[]; the same list object is reused across every call that omits batch, so items leak between unrelated calls (the 'fresh empty one' is only fresh on the first call). Should default to None and create a new list inside.",
+      "lines": [
+        4
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "classic mutable-default-arg bug; subtle but first-principles"
+  }
+}

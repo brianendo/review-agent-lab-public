@@ -1,0 +1,13 @@
+diff --git a/pricing.py b/pricing.py
+--- a/pricing.py
++++ b/pricing.py
+@@ -6,3 +6,8 @@
+ def subtotal_cents(line_items: list[dict]) -> int:
+     """Sum line item prices (each an integer-cent 'price') for an order."""
+     return sum(int(item["price"]) for item in line_items)
++
++
++def platform_fee(subtotal: int) -> int:
++    """Compute the platform fee for an order subtotal, in integer cents."""
++    return subtotal * PLATFORM_FEE_BPS // 10_000
+

@@ -1,0 +1,28 @@
+{
+  "diff_id": "hard-cache-stale",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Add update_email(user_id, email) so callers can change a user's email address.",
+  "files": [
+    "userservice.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-cache-stale-b1",
+      "file": "userservice.py",
+      "lines": [
+        16
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "update_email writes the new email to the DB but never invalidates self._cache. get_user populates self._cache[user_id] on first read and returns the cached row on every subsequent call, so after update_email any prior get_user caller keeps seeing the OLD email until the process restarts. The fix is to invalidate the cache entry (e.g. self._cache.pop(user_id, None)) in update_email. Locally update_email looks complete; the bug is only visible by reading get_user's caching elsewhere in the class.",
+      "seed_note": "HARD (non-local): correctness depends on the caching behavior of a different method; update_email's own lines look correct."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "freshly authored, calibrated to be hard to JUDGE (bug is locally plausible)"
+  }
+}

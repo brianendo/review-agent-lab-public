@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-round-nickel",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built arbitrary-rule case",
+  "task_spec": "Add service_fee(amount): the fee is 3% of amount, but per our billing agreement it must be rounded UP to the next whole 5 cents (nickel). E.g. amount 4000 -> 3% = 120 -> already a nickel -> 120; amount 4100 -> 123 -> rounded up to 125.",
+  "files": [
+    "fees.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-round-nickel-b1",
+      "file": "fees.py",
+      "lines": [
+        8
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "service_fee uses round() to the nearest cent, but the spec requires rounding UP to the next 5 cents (nickel). Correct: math.ceil(amount*FEE_BPS/10000/5)*5. Rounding to the nearest cent is a perfectly normal default; only the arbitrary nickel-up billing rule (spec only) makes it wrong."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-arbitrary",
+    "model_cutoff_status": "na",
+    "note": "arbitrary rule lives ONLY in task_spec; not derivable from code or world knowledge"
+  }
+}

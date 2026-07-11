@@ -1,0 +1,28 @@
+{
+  "diff_id": "intent-fee-floor",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built external-spec intent case",
+  "task_spec": "Add platform_fee(subtotal): the platform fee is 2.5% of the subtotal, but finance requires fees be WHOLE DOLLARS on statements, so the result must be floored to the nearest 100 cents (rounded DOWN to a whole dollar). Example: subtotal 4799 -> 2.5% = 119 cents -> floored to 100 cents.",
+  "files": [
+    "pricing.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-fee-floor-b1",
+      "file": "pricing.py",
+      "lines": [
+        13
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "platform_fee returns the cent-precise 2.5% fee and does NOT floor to a whole dollar as the task requires. Correct: (subtotal * 250 // 10000) // 100 * 100. Locally the code is a perfectly reasonable integer-cents percentage; nothing in the repo states the whole-dollar rule, so the violation is only knowable from the task spec.",
+      "seed_note": "EXTERNAL-SPEC INTENT BUG: whole-dollar-floor requirement exists only in task_spec, absent from the repo and not derivable from first principles. Designed so I0 (diff only) cannot know it and I2a (diff + spec) can."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic",
+    "model_cutoff_status": "na",
+    "note": "freshly authored for this evalset"
+  }
+}

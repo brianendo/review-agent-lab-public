@@ -1,0 +1,28 @@
+{
+  "diff_id": "hard-orderbook-sorted",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Add add_bid(price) so the book can record a newly observed bid.",
+  "files": [
+    "book.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-orderbook-sorted-b1",
+      "file": "book.py",
+      "lines": [
+        18
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "add_bid appends to self.bids, but self.bids is maintained highest-first (sorted(bids, reverse=True) in __init__) and best_bid()/spread_to() rely on self.bids[0] being the maximum. Appending a bid higher than the current best leaves it at the end, so best_bid() returns a stale, too-low value. add_bid must insert in sorted position (or re-sort). Locally, appending to a list is unremarkable; the bug is only visible by connecting __init__'s ordering with best_bid's self.bids[0] assumption.",
+      "seed_note": "HARD (non-local invariant): the sorted-descending invariant is never stated near add_bid; it is implicit in __init__ and best_bid."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "freshly authored, calibrated to be hard to JUDGE (bug is locally plausible)"
+  }
+}

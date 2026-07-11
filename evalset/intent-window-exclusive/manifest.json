@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-window-exclusive",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built arbitrary-rule case",
+  "task_spec": "Add in_window(ts, start, end): our windows are half-open. ts is in the window iff start <= ts < end (the end is EXCLUSIVE), so adjacent windows never double-count a boundary timestamp.",
+  "files": [
+    "window.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-window-exclusive-b1",
+      "file": "window.py",
+      "lines": [
+        6
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "in_window uses start <= ts <= end (inclusive end), but the spec requires a half-open window with an EXCLUSIVE end (start <= ts < end). A ts exactly equal to end is wrongly counted as in-window and double-counted by the adjacent window. Inclusive bounds are a normal default; only the arbitrary half-open convention (spec only) makes <= wrong."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-arbitrary",
+    "model_cutoff_status": "na",
+    "note": "arbitrary rule lives ONLY in task_spec; not derivable from code or world knowledge"
+  }
+}

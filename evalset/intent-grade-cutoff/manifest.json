@@ -1,0 +1,27 @@
+{
+  "diff_id": "intent-grade-cutoff",
+  "repo": "synthetic-intent",
+  "source_commit": "hand-built",
+  "task_spec": "Add letter_grade(score). NOTE: our program uses a stricter scale than the usual 90/80/70 \u2014 an A requires score >= 93, a B >= 85, a C >= 77.",
+  "files": [
+    "grades.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "intent-grade-cutoff-b1",
+      "file": "grades.py",
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "description": "letter_grade uses the conventional 90/80/70 cutoffs, but the spec mandates a stricter 93/85/77 scale. The standard cutoffs are the obvious default; only the arbitrary program-specific scale in the spec makes them wrong.",
+      "lines": [
+        6
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-intent",
+    "model_cutoff_status": "na",
+    "note": "arbitrary grade cutoffs; only in spec"
+  }
+}

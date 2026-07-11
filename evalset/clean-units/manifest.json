@@ -1,0 +1,16 @@
+{
+  "diff_id": "clean-units",
+  "repo": "synthetic-clean",
+  "source_commit": "hand-built",
+  "task_spec": "Add temperature (c_to_f, f_to_c) and distance (km_to_mi) converters.",
+  "files": [
+    "units.py"
+  ],
+  "bugs": [],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-clean",
+    "model_cutoff_status": "na",
+    "note": "correct code, no seeded bug; measures false-positive rate"
+  }
+}

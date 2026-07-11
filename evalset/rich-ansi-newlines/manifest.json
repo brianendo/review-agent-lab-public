@@ -1,0 +1,29 @@
+{
+  "diff_id": "rich-ansi-newlines",
+  "repo": "rich",
+  "source_commit": "58ac15120f (reversed fix)",
+  "commit_date": "2026-04-12",
+  "task_spec": "AnsiDecoder.decode must preserve the newline structure of the input, including blank/trailing lines -- decoding text with trailing or repeated newlines must not collapse or drop them. (Textualize/rich#4076)",
+  "files": [
+    "rich/ansi.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "rich-ansi-newlines-b1",
+      "file": "rich/ansi.py",
+      "lines": [
+        135
+      ],
+      "category": "off-by-one",
+      "severity": "medium",
+      "description": "decode iterates terminal_text.splitlines(), which discards information about trailing and consecutive newlines (e.g. 'a\\n\\nb' and 'a\\nb' become indistinguishable, and a trailing '\\n' is dropped). Decoding no longer preserves the input's blank/trailing lines. The fix splits on newline boundaries with re.split(r'(?<=\\n)') instead.",
+      "seed_note": "NATURAL post-cutoff bug: inverse of Textualize/rich PR #4076."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss",
+    "model_cutoff_status": "post",
+    "note": "public repo, fix merged 2026-04-12 after the 2026-01-31 model cutoff; post-cutoff, contamination-clean."
+  }
+}

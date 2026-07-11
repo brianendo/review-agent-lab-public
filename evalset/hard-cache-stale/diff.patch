@@ -1,0 +1,12 @@
+diff --git a/userservice.py b/userservice.py
+--- a/userservice.py
++++ b/userservice.py
+@@ -10,3 +10,7 @@
+         if user_id not in self._cache:
+             self._cache[user_id] = self.db.fetch_user(user_id)
+         return self._cache[user_id]
++
++    def update_email(self, user_id, email):
++        """Update the user's email address."""
++        self.db.update_user(user_id, {"email": email})
+

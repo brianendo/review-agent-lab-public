@@ -1,0 +1,17 @@
+{
+  "diff_id": "clean-rich-linkids",
+  "repo": "rich",
+  "source_commit": "9ac7e79",
+  "task_spec": "Use faster generator for link IDs",
+  "files": [
+    "rich/style.py"
+  ],
+  "bugs": [],
+  "commit_date": "2026-02-26",
+  "provenance": {
+    "class": "clean",
+    "source": "public-oss-clean",
+    "model_cutoff_status": "post",
+    "note": "real OSS change merged 2026-02-26 (post-cutoff), presumed correct; measures false-positive rate"
+  }
+}

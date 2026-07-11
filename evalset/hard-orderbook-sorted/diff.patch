@@ -1,0 +1,12 @@
+diff --git a/book.py b/book.py
+--- a/book.py
++++ b/book.py
+@@ -12,3 +12,7 @@
+     def spread_to(self, ask):
+         """Distance from the best bid up to an ask price."""
+         return ask - self.best_bid()
++
++    def add_bid(self, price):
++        """Record a newly observed bid."""
++        self.bids.append(price)
+

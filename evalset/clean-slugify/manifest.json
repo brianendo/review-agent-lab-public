@@ -1,0 +1,16 @@
+{
+  "diff_id": "clean-slugify",
+  "repo": "synthetic-clean",
+  "source_commit": "hand-built",
+  "task_spec": "Add slugify(text) that turns a title into a URL slug.",
+  "files": [
+    "slug.py"
+  ],
+  "bugs": [],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-clean",
+    "model_cutoff_status": "na",
+    "note": "correct code, no seeded bug; measures false-positive rate"
+  }
+}
