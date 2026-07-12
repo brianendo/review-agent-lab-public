@@ -129,11 +129,23 @@ caught them every time. So the mechanism is precise:
 > intended behavior**; the reviewer defers to a plausible "by design" claim but
 > refutes a checkably-false technical one.
 
-This explains the earlier mixed signals: `multi-invoice`, `multi-parse`, and
-`multi-geometry` were flat because their bugs weren't *credibly* defensible as
-intended; `multi-stats` suppresses because "empty input should raise" is a plausible
-design stance. (An early n=3 pilot's 100%→80% and a confounded two-rig 82%→74%
-both mis-sized this before the controlled run isolated it.)
+A **controlled contrast** confirms the credibility gate. On `multi-invoice` the
+trace frames the `subtotal` off-by-one as intended ("the last item is typically a
+summary/total row"), but that claim is *not credible* — the items are plain
+`{price, qty}` dicts — so all three +trace trials **refuted it and caught the bug**
+(*"there is no guarantee the last element is a summary row"*); recall held at
+100% → 92% (the lone miss unrelated). Same rig, same design as `multi-stats`; the
+only difference is whether the "it's intended" claim is believable:
+
+| case | intent-framing | credible? | diff-only → +trace |
+|---|---|---|---|
+| `multi-stats` | "raises on empty, which is correct" | yes | 100% → **60%** (suppressed) |
+| `multi-invoice` | "last item is a summary row" | no | 100% → **92%** (refuted) |
+
+So the earlier flat cases (`multi-invoice`, `multi-parse`, `multi-geometry`) were
+flat *because* their bugs weren't credibly defensible as intended — not because the
+effect is random. (An early n=3 pilot's 100%→80% and a confounded two-rig 82%→74%
+both mis-sized this before the controlled runs isolated the mechanism.)
 
 ## 4. Effort buys nothing here (the token-economics result)
 
