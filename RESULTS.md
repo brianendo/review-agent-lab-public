@@ -104,22 +104,25 @@ trace — strict scoring, **5 trials per cell, n=10 runs per arm**.
 | `multi-stats` recall | 76% | 60% |
 | **pooled recall** | **82%** | **74%** |
 
-A **modest, directional drop (−8pp pooled)** — and the mechanism is visible at the
-bug level. The clearest case: `multi-stats.mean`, whose empty-list `ZeroDivisionError`
-is caught **80% of the time diff-only but 0% with the trace** — the trace confidently
-asserts the division "is correct because we work in integer cents," and the reviewer
-stops flagging it. The trace *suppresses specific bugs it defends*, rather than
-uniformly lowering vigilance.
+**The effect is weak and inconsistent.** It shows up in one case
+(`multi-stats`, where `mean`'s empty-list `ZeroDivisionError` is caught 80% of the
+time diff-only but 0% with the trace that confidently defends the division) and is
+**absent in three** (`multi-invoice`, and two further cases `multi-parse` /
+`multi-geometry` reviewed on the same Opus via a separate blind-reviewer rig, both
+flat at 4/4 → 4/4 — the reviewer caught every bug *despite* the trace explicitly
+defending it, including a `//` truncation and a missing polygon closing edge).
 
-Honesty note: a single-case n=3 pilot showed a larger 100% → 80% effect that
-**did not survive more trials** — at n=5 the bug it appeared to suppress was noisy
-(40% in both arms). The strengthened result is smaller but real. That the harness's
-own variance reporting caught the overstatement is the point of running trials.
+So across **four multi-bug cases the "trace suppresses catches" effect appears in
+exactly one.** The mechanism is real — a reviewer *can* defer to a confident
+rationalization (multi-stats proves it) — but the reviewer is **usually robust**,
+and the earlier 100%→80% pilot and 82%→74% two-case number both overstate a
+fragile, case-dependent phenomenon.
 
-This is the intent-vs-process split the project set out to test: **intent context
-helps (narrowly, §3); process context hurts (modestly, here).** The harm is
-specifically the reviewer deferring to the coder's confident rationalization of a
-bug. (2 cases, 5 trials; directional, wants more pairs to size precisely.)
+Honest status: **intent context helps (narrowly, §3) is solid; process context
+hurts is weak and unreliable.** The dominant fact remains §1 — the reviewer is at
+ceiling regardless of context. (Small n; the three flat cases include two on a
+blind-subagent rig prompted for exhaustiveness, not the byte-controlled harness —
+a stronger replication would re-run all four through the harness.)
 
 ## 4. Effort buys nothing here (the token-economics result)
 

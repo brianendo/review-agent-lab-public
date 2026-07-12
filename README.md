@@ -4,16 +4,8 @@
 with the methodology Cognition's claim was missing.**
 
 One custom review-agent harness (Opus 4.8, read-only tools, full-repo context),
-run through controlled iterations against a seeded-bug evalset with strict, audited
-scoring. Every claim below is backed by a committed, reproducible run.
-
-> **This is the public evalset — 27 cases:** synthetic (arbitrary-rule intent,
-> hard non-local, multi-bug), natural bugs reversed out of real OSS fix-PRs
-> (httpx, requests, anyio, pydantic, click, rich), and clean diffs for the
-> false-positive rate. The findings in `RESULTS.md` / `WRITEUP.md` were measured
-> on a larger private set that additionally included the author's own repositories
-> (kept private); every headline result reproduces on the public cases here.
-> Third-party snapshots are credited in `NOTICE.md`.
+run through controlled iterations against a 30-case seeded-bug evalset with strict,
+audited scoring. Every claim below is backed by a committed, reproducible run.
 
 ## The headline
 
@@ -24,23 +16,22 @@ one heuristic into its parts, each measured:
 | Context you could share | Effect on the reviewer | Measured |
 |---|---|---|
 | **Intent** (the task spec) | **Helps — but only narrowly** | recall on arbitrary-rule bugs: **0% → 100%**; everything else already at ceiling |
-| **Process** (the coder's reasoning trace) | **Hurts (modestly)** | recall **82% → 74%** — the reviewer inherits the coder's blind spot (a defended div-by-zero: 80% → 0%) |
+| **Process** (the coder's reasoning trace) | **Weak / inconsistent** | suppressed catches in **1 of 4** multi-bug cases (a defended div-by-zero: 80% → 0%); the reviewer is usually robust to a confident defense |
 | **Effort** (make it think harder) | **Neutral** | recall flat, **2.6× the cost** |
 
 Underneath: a zero-context reviewer with repo access already catches ~**100%** of
 bugs that are detectable in the diff — subtle, multi-bug, and non-local ones alike.
 So context only changes outcomes at the margins.
 
-**The precise rule:** *share the intent, never the reasoning, and don't pay for
-more thinking.*
+**The precise rule:** *share the intent, skip the reasoning, and don't pay for
+more thinking — but mostly, the reviewer is at ceiling regardless.*
 
 ## Read more
 
 - **[WRITEUP.md](WRITEUP.md)** — the full narrative (motivation, rig, findings, limits)
-- **[PUBLIC_RESULTS.md](PUBLIC_RESULTS.md)** — headline findings measured on THIS public evalset
 - **[RESULTS.md](RESULTS.md)** — the numbers and tables
 - **[INTERPRETATION.md](INTERPRETATION.md)** — plain-language reading + the Cognition verdict
-- **[NOTICE.md](NOTICE.md)** — third-party OSS snapshots and their licenses
+- **[architecture.md](architecture.md)** — the original design
 
 ## How it works
 

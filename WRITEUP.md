@@ -72,18 +72,20 @@ everything else, the zero-context reviewer is already at ceiling. Intent context
 also improved **precision** at recall-tie (fewer spurious findings from guessing
 intent).
 
-### 4. Process context — the coder's reasoning trace — *hurts*.
+### 4. Process context — the coder's reasoning trace — *can* hurt, but weakly and inconsistently.
 
 Intent (§3) and *process* are different context. Attaching the coding agent's own
-reasoning trace — one that confidently defends the code function by function —
-dropped recall across two 5-bug diffs from **82% to 74%** (5 trials, n=10/arm).
-The mechanism is visible at the bug level: an empty-list `ZeroDivisionError` the
-trace defends ("correct because we work in integer cents") is caught 80% of the
-time without the trace and **0% with it**. The trace *suppresses specific bugs it
-rationalizes*, rather than lowering vigilance across the board. (A single-case n=3
-pilot showed a larger 100%→80% effect that shrank under more trials — the honest
-number is the modest one.) This is the intent-vs-process distinction Cognition's
-claim conflates: shared *intent* helps narrowly; shared *process* hurts.
+reasoning trace — one that confidently defends the code function by function — was
+meant to test whether the reviewer inherits the coder's blind spots. It sometimes
+does: on `multi-stats`, an empty-list `ZeroDivisionError` the trace defends is
+caught 80% of the time without the trace and **0% with it**. But this is the
+exception. Across **four multi-bug cases the effect appears in exactly one**; the
+other three are flat — the reviewer caught every bug *despite* the trace explicitly
+defending it (a `//` truncation, a missing polygon closing edge, a truthiness bug).
+The mechanism (deferring to a confident rationalization) is real, but the reviewer
+is **usually robust**, and an early 100%→80% pilot badly overstated a fragile,
+case-dependent phenomenon. Honest read: shared *intent* helps narrowly; shared
+*process* is a weak, unreliable drag, not a dependable one.
 
 ### 5. Reasoning effort is wasted spend.
 
@@ -102,14 +104,15 @@ refinement:
 > non-local ones. Shared **intent** context (the task spec) changes the outcome
 > only for the narrow class of bugs whose correctness is an arbitrary requirement
 > absent from the code and from world knowledge. Shared **process** context (the
-> coder's reasoning trace) actively *hurts* — the reviewer inherits the coder's
-> blind spots and stops scrutinizing a subtly-buggy path the trace defends.
-> Shared **effort** buys nothing.
+> coder's reasoning trace) *can* transplant a blind spot, but only weakly and
+> inconsistently — the reviewer is usually robust to a confident defense. Shared
+> **effort** buys nothing.
 
 This decomposes Cognition's "zero shared context works best" into its parts:
-*intent* helps narrowly, *process* hurts, *effort* is neutral — which is why a
-blanket "share nothing" heuristic lands in roughly the right place, but for
-reasons worth knowing.
+*intent* helps narrowly, *process* hurts weakly and unreliably, *effort* is
+neutral — and above all, the reviewer is at ceiling regardless. A blanket "share
+nothing" heuristic lands in roughly the right place mostly because context rarely
+changes the outcome at all, not because sharing is reliably harmful.
 
 This says *when* context matters and *why* — which the headline numbers could not.
 

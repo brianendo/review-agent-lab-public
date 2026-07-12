@@ -21,9 +21,14 @@ Across the 15 seeded cases whose bugs are detectable from the code (everything e
 
 The cases the reviewer misses without the spec are exactly those whose correct behavior is an *arbitrary* value (a magic threshold/rounding rule); rules that double as a general code smell it catches unaided.
 
-## 3. Process context (the coder's trace) hurts
+## 3. Process context (the coder's trace) — weak, inconsistent
 
-On two multi-bug diffs (5 trials, n=10/arm), attaching a coder trace that confidently defends the code moved recall **82% → 74%** — the reviewer stops flagging bugs the trace rationalizes.
+Attaching a coder trace that confidently defends the code *can* make the reviewer
+stop flagging a bug it rationalizes (on `multi-stats`, a defended div-by-zero
+went 80% → 0%). But across **four** multi-bug cases the effect appears in **one**;
+the other three are flat — the reviewer catches every bug despite the defense. The
+mechanism is real, the effect is fragile. Two of the flat cases were verified on a
+blind same-Opus subagent rig rather than the harness.
 
 ## 4. False-positive rate (clean diffs)
 
