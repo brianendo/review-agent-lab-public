@@ -16,15 +16,16 @@ one heuristic into its parts, each measured:
 | Context you could share | Effect on the reviewer | Measured |
 |---|---|---|
 | **Intent** (the task spec) | **Helps — but only narrowly** | recall on arbitrary-rule bugs: **0% → 100%**; everything else already at ceiling |
-| **Process** (the coder's reasoning trace) | **Weak / inconsistent** | suppressed catches in **1 of 4** multi-bug cases (a defended div-by-zero: 80% → 0%); the reviewer is usually robust to a confident defense |
+| **Process** (the coder's reasoning trace) | **Hurts selectively** | when it credibly reframes a bug as *intended*, recall **100% → 60%** (controlled) — the reviewer defers to "it's by design" but refutes checkably-false claims |
 | **Effort** (make it think harder) | **Neutral** | recall flat, **2.6× the cost** |
 
 Underneath: a zero-context reviewer with repo access already catches ~**100%** of
 bugs that are detectable in the diff — subtle, multi-bug, and non-local ones alike.
 So context only changes outcomes at the margins.
 
-**The precise rule:** *share the intent, skip the reasoning, and don't pay for
-more thinking — but mostly, the reviewer is at ceiling regardless.*
+**The precise rule:** *share the intent, never let the coder's "it's intended"
+rationalizations reach the reviewer, and don't pay for more thinking — over a
+reviewer that's otherwise at ceiling.*
 
 ## Read more
 

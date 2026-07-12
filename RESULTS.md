@@ -104,25 +104,36 @@ trace — strict scoring, **5 trials per cell, n=10 runs per arm**.
 | `multi-stats` recall | 76% | 60% |
 | **pooled recall** | **82%** | **74%** |
 
-**The effect is weak and inconsistent.** It shows up in one case
-(`multi-stats`, where `mean`'s empty-list `ZeroDivisionError` is caught 80% of the
-time diff-only but 0% with the trace that confidently defends the division) and is
-**absent in three** (`multi-invoice`, and two further cases `multi-parse` /
-`multi-geometry` reviewed on the same Opus via a separate blind-reviewer rig, both
-flat at 4/4 → 4/4 — the reviewer caught every bug *despite* the trace explicitly
-defending it, including a `//` truncation and a missing polygon closing edge).
+**The effect is real, reproducible, and selective.** A controlled test on
+`multi-stats` — same blind-reviewer rig, same neutral prompt, 3 trials per arm —
+shows it cleanly:
 
-So across **four multi-bug cases the "trace suppresses catches" effect appears in
-exactly one.** The mechanism is real — a reviewer *can* defer to a confident
-rationalization (multi-stats proves it) — but the reviewer is **usually robust**,
-and the earlier 100%→80% pilot and 82%→74% two-case number both overstate a
-fragile, case-dependent phenomenon.
+| | diff-only | + coder trace |
+|---|---|---|
+| recall (5 bugs × 3 trials) | **100%** (15/15) | **60%** (9/15) |
 
-Honest status: **intent context helps (narrowly, §3) is solid; process context
-hurts is weak and unreliable.** The dominant fact remains §1 — the reviewer is at
-ceiling regardless of context. (Small n; the three flat cases include two on a
-blind-subagent rig prompted for exhaustiveness, not the byte-controlled harness —
-a stronger replication would re-run all four through the harness.)
+Every +trace trial missed *exactly* the same two bugs — `mean`'s empty-list
+`ZeroDivisionError` and `sample_range`'s empty-list `ValueError` — and no others.
+Those are precisely the two the trace framed as **intended behavior** (*"will raise
+ZeroDivisionError, which is correct — there is no meaningful mean of an empty
+set"*). One reviewer said it outright: *"mean and sample_range are correct (their
+error on empty input is intended per the notes)."* The reviewer **deferred to the
+coder's authority and reclassified real bugs as design choices.**
+
+Crucially it is *selective*: the same traces defended `median`, `percentile`, and
+`moving_average` too, but with **checkably-false** claims (e.g. "`range(len-k)`
+produces `len-k+1` windows" — it produces `len-k`). The reviewer verified those and
+caught them every time. So the mechanism is precise:
+
+> A coder's trace transplants a blind spot when it **credibly reframes a bug as
+> intended behavior**; the reviewer defers to a plausible "by design" claim but
+> refutes a checkably-false technical one.
+
+This explains the earlier mixed signals: `multi-invoice`, `multi-parse`, and
+`multi-geometry` were flat because their bugs weren't *credibly* defensible as
+intended; `multi-stats` suppresses because "empty input should raise" is a plausible
+design stance. (An early n=3 pilot's 100%→80% and a confounded two-rig 82%→74%
+both mis-sized this before the controlled run isolated it.)
 
 ## 4. Effort buys nothing here (the token-economics result)
 

@@ -18,12 +18,13 @@ Four findings, one story:
    not present in the code or in general knowledge (a magic threshold, a bespoke
    rounding rule). For everything else the reviewer is already at ceiling, so
    intent adds nothing.
-3. **Showing the reviewer the *coder's reasoning* can hurt — but weakly and
-   rarely.** With the coder's confident rationale attached, the reviewer sometimes
-   stops flagging a bug the trace defends (a div-by-zero: 80% → 0%). But this
-   happened in only **1 of 4** multi-bug cases tested; in the other three the
-   reviewer caught every bug despite the defense. The mechanism is real; the
-   effect is fragile.
+3. **Showing the reviewer the *coder's reasoning* hurts — selectively.** In a
+   controlled test, attaching a trace that frames two bugs as *intended behavior*
+   ("raises on empty input, which is correct") dropped recall **100% → 60%**, with
+   every trial missing exactly those two bugs. But the same trace's *checkably-false*
+   claims about three other bugs were refuted and caught. So the reviewer defers to a
+   plausible "it's by design" claim — reclassifying a real bug as a choice — but not
+   to a wrong technical assertion.
 4. **Making the model "think harder" does nothing.** 2.6× the cost, zero gain.
 
 ## Does it confirm Cognition?
@@ -32,45 +33,46 @@ Cognition (Walden Yan, April 2026) claimed a reviewer works best with **zero
 shared context with the coding agent**. Verdict: **yes on the core direction, with
 two refinements and one honest caveat.**
 
-**Partly supported (direction), but weakly.** The critical phrase is *shared
-context with the coding agent* — the coder's process/reasoning. We found the
-predicted direction — sharing the coder's reasoning *can* hurt: on one case the
-reviewer stopped flagging a bug the trace defends (80% → 0%). But the effect
-appeared in only **1 of 4** multi-bug cases; usually the reviewer stayed robust.
-So the mechanism behind Cognition's heuristic exists, but our evidence that it
-*reliably* hurts is thin. The stronger reason "share nothing" works is simply that
-the reviewer is at ceiling with or without context (finding 1).
+**Supported, with a precise mechanism.** The critical phrase is *shared context
+with the coding agent* — the coder's process/reasoning. Sharing it *does* hurt, but
+selectively: in a controlled test the reviewer's recall dropped **100% → 60%**,
+missing exactly the bugs the trace credibly framed as *intended behavior* — it
+deferred to the author's "it's by design" claim and reclassified real bugs as
+choices. It did **not** defer to the trace's checkably-false claims (it refuted
+those). So Cognition's instinct is right and we can say *why* and *when*: the danger
+is the reviewer inheriting the coder's rationalization of a bug as intentional — not
+a blanket harm from any shared reasoning.
 
-**Refinement 1 — "share nothing" is too broad.** *Intent* context (the task spec)
-is different from *process* context (the coder's reasoning). Intent **helps**
-(narrowly); process only *sometimes* hurts (1 of 4 cases). You should share the
-spec regardless; skip the coder's session because it doesn't help, not because it
-reliably hurts. Cognition lumps these together and discards the useful half.
+**Refinement 1 — "share nothing" is too broad, and its two halves conflict.**
+*Intent* context (the task spec) **helps** (narrowly); *process* context (the
+coder's reasoning) **hurts** when it credibly reframes a bug as intended. You should
+share the spec and withhold the coder's rationalizations — opposite actions the
+blanket "share nothing" can't express (it throws away the useful half to avoid the
+harmful half).
 
 **Refinement 2 — for most bugs, context is irrelevant.** The zero-context reviewer
-is already at ceiling. So the entire "shared context" debate only decides outcomes
-at the margins: a small slice of arbitrary-rule bugs (where intent helps) and the
-occasional bug a coder's confident defense talks the reviewer out of flagging.
+is already at ceiling. So the debate only decides outcomes at the margins: a small
+slice of arbitrary-rule bugs (where intent helps) and bugs a coder credibly defends
+as intended (where process hurts).
 
 **Caveat.** We did **not** reproduce their headline *numbers* (~2 bugs/PR, 58%
-severe) — that needs their PRs and setup. We tested the *claim and its mechanism*
-on our own evalset. The process-context effect is weak and inconsistent (present
-in 1 of 4 multi-bug cases; two of the flat cases were reviewed on a blind-subagent
-rig, not the byte-controlled harness) — the mechanism is demonstrated, its
-reliability is not.
+severe) — that needs their PRs. We tested the *claim and its mechanism*. The
+process result is a controlled single-case test on a blind-subagent rig (3
+trials/arm, clean 100%→60%); its mechanism is isolated, but a multi-case harness
+replication would size how often a coder's defense is *credible* enough to work.
 
 ## Bottom line
 
-> Cognition's instinct that the coder's reasoning shouldn't leak into the reviewer
-> points the right way, but our evidence that it *reliably* hurts is thin — it hurt
-> in only 1 of 4 cases. "Zero shared context" mostly works for a different reason:
-> the reviewer is already at ceiling without any context, and the heuristic
-> accidentally discards *intent* context, the one kind that helps. The precise
-> rule: **share the intent, skip the reasoning (it rarely helps, occasionally
-> hurts), and don't pay for more thinking — and know that most of the time it
-> doesn't matter because the reviewer is at ceiling.**
+> Cognition is right that the coder's reasoning shouldn't leak into the reviewer —
+> and we pin down *why*: the reviewer defers to a plausible "this bug is intended"
+> claim and stops flagging it. But the heuristic is right for two reasons it
+> conflates: mostly the reviewer is at ceiling and context doesn't matter, and
+> "share nothing" accidentally discards *intent*, the one kind that helps. The
+> precise rule: **share the intent, never let the coder's rationalizations reach the
+> reviewer, and don't pay for more thinking.**
 
 Decomposing their single heuristic into its parts — **intent-helps-narrowly /
-process-hurts-weakly / effort-neutral**, over a reviewer that's mostly at ceiling —
-each measured, is the contribution. It engages the claim rather than echoing it,
-including where the evidence turned out weaker than the tidy version.
+process-hurts-selectively / effort-neutral**, over a reviewer that's mostly at
+ceiling — each measured, is the contribution. It engages the claim rather than
+echoing it, including the twists (an overstated pilot, then a confounded downgrade,
+then a controlled test that isolated the real mechanism) that a tidy story hides.
