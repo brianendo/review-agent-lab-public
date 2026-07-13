@@ -1,0 +1,30 @@
+{
+  "diff_id": "bigrepo-proration",
+  "repo": "synthetic-bigrepo",
+  "source_commit": "hand-built repo-scale PR",
+  "task_spec": "PR: add proration-credit support so charges honor a customer's owed credits. compute_charge now takes an optional account and applies its proration credit; signup.py updated to pass the account.",
+  "files": [
+    "services/pricing.py",
+    "services/proration.py",
+    "services/signup.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "bigrepo-b1",
+      "file": "services/renewal.py",
+      "lines": [
+        8
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "The PR changes compute_charge to take an optional `account` and apply proration credits, and updates signup.py to pass the account \u2014 but renewal.py (a DISTANT caller NOT in the diff) still calls compute_charge(subscription, on_date) without the account. Because the new param is optional, there is no error; renewals silently IGNORE the customer's proration credit_balance and OVERCHARGE every customer who is owed a credit. Catching it requires finding the other callers of the changed function and noticing renewal was not updated."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-bigrepo",
+    "model_cutoff_status": "na",
+    "note": "~16-file repo; the bug is a distant un-updated caller (renewal.py) NOT in the diff \u2014 catching it requires navigating the repo to find all callers of the changed function. Tests repo-scale navigation, not inline review."
+  }
+}

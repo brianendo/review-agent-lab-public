@@ -1,0 +1,52 @@
+diff --git a/services/pricing.py b/services/pricing.py
+--- a/services/pricing.py
++++ b/services/pricing.py
+@@ -1,6 +1,19 @@
+ """Charge computation."""
++from core.money import Money
++from services.proration import proration_credit
+ 
+ 
+-def compute_charge(subscription, on_date):
+-    """Charge for the subscription's current cycle as of `on_date`."""
+-    return subscription.plan.price
++def compute_charge(subscription, on_date, account=None):
++    """Net charge for the subscription's current cycle as of `on_date`.
++
++    When `account` is given, any proration credit the account is owed is applied
++    against the charge (the credit is consumed and the charge reduced, floored at
++    zero). Callers that bill a real customer MUST pass the account so credits are
++    honored.
++    """
++    base = subscription.plan.price
++    if account is None:
++        return base
++    credit = proration_credit(account, on_date)
++    net = base.cents - credit.cents
++    return Money(net if net > 0 else 0)
+
+diff --git a/services/proration.py b/services/proration.py
+--- a/services/proration.py
++++ b/services/proration.py
+@@ -0,0 +1,7 @@
++"""Proration credits."""
++from core.money import Money
++
++
++def proration_credit(account, on_date):
++    """Credit owed to `account` to apply against its next charge."""
++    return account.credit_balance
+
+diff --git a/services/signup.py b/services/signup.py
+--- a/services/signup.py
++++ b/services/signup.py
+@@ -5,7 +5,7 @@
+ 
+ 
+ def process_signup(subscription, account, on_date):
+-    charge = compute_charge(subscription, on_date)
++    charge = compute_charge(subscription, on_date, account)
+     total = charge + tax_for(charge, account.region)
+     post_charge(account, total)
+     return total
+
