@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-parser-quotes",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built frontier case",
+  "task_spec": "Implement parse_config(text) for `key = value` lines. A `#` starts an inline comment UNLESS it appears inside a double-quoted value, in which case it is a literal part of the value. Double-quoted values may contain spaces and `#`; the surrounding quotes are stripped from the result.",
+  "files": [
+    "cfg.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-parser-quotes-b1",
+      "file": "cfg.py",
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "Inline-comment stripping uses line.index('#') with no awareness of quotes, so a '#' inside a quoted value is treated as a comment. For `color = \"#ff0000\"` it truncates the line to `color = \"` , losing the value entirely (and the later quote-strip no longer applies). The comment scan must skip '#' characters that fall inside double quotes.",
+      "lines": [
+        20
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "bespoke stateful interaction bug; no textbook pattern, no worked example"
+  }
+}

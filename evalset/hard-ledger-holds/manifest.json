@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-ledger-holds",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built frontier case",
+  "task_spec": "Implement an Account with deposit, place_hold/release_hold/capture_hold, available(), withdraw, and transfer. Invariant: a hold earmarks funds that cannot be spent; withdrawals and transfers may only draw on SPENDABLE funds (balance minus active holds), never on money that is currently held.",
+  "files": [
+    "account.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-ledger-holds-b1",
+      "file": "account.py",
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "withdraw checks `amount > self.balance` but must check `amount > self.available()`. As written it ignores active holds, so held (earmarked) funds can be withdrawn \u2014 e.g. deposit 100, place_hold 80, then withdraw 100 succeeds, leaving available() at -80 and violating the core invariant. transfer inherits the same flaw. The check must use available(), not balance.",
+      "lines": [
+        42
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "bespoke stateful interaction bug; no textbook pattern, no worked example"
+  }
+}

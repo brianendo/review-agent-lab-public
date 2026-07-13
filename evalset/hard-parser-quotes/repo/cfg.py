@@ -1,0 +1,29 @@
+"""Config parsing with quotes and comments."""
+
+
+def parse_config(text):
+    """Parse `key = value` lines into a dict.
+
+    Rules:
+      - Blank lines and lines whose first non-space char is `#` are ignored.
+      - An unquoted `#` begins an inline comment (the rest of the line is dropped).
+      - A value may be wrapped in double quotes to contain spaces or a literal `#`;
+        a `#` inside quotes is part of the value, NOT a comment.
+      - Surrounding double quotes are stripped from the stored value.
+    """
+    result = {}
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "#" in line:
+            line = line[:line.index("#")].strip()
+        if "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip()
+        if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+            value = value[1:-1]
+        result[key] = value
+    return result

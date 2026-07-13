@@ -1,0 +1,48 @@
+"""Cash account with holds."""
+
+
+class Account:
+    """A cash account. A *hold* earmarks funds (a pending charge) so they cannot
+    be spent, but they stay in the balance until the hold is captured or released.
+    Spendable funds = balance minus the sum of active holds."""
+
+    def __init__(self):
+        self.balance = 0
+        self._holds = {}
+        self._next = 1
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("amount must be positive")
+        self.balance += amount
+
+    def available(self):
+        return self.balance - sum(self._holds.values())
+
+    def place_hold(self, amount):
+        if amount <= 0:
+            raise ValueError("amount must be positive")
+        if amount > self.available():
+            raise ValueError("insufficient available funds")
+        hid = self._next
+        self._next += 1
+        self._holds[hid] = amount
+        return hid
+
+    def release_hold(self, hid):
+        self._holds.pop(hid, None)
+
+    def capture_hold(self, hid):
+        amount = self._holds.pop(hid)
+        self.balance -= amount
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError("amount must be positive")
+        if amount > self.balance:
+            raise ValueError("insufficient funds")
+        self.balance -= amount
+
+    def transfer(self, other, amount):
+        self.withdraw(amount)
+        other.deposit(amount)

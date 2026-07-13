@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-lru-refresh",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built frontier case",
+  "task_spec": "Implement an LRUCache(capacity) with get(key) and put(key, value). It evicts the least-recently-USED entry when full. IMPORTANT: both a get AND a put (including overwriting an existing key's value) count as a use and make that key the most recently used.",
+  "files": [
+    "cache.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-lru-refresh-b1",
+      "file": "cache.py",
+      "category": "state-ordering",
+      "severity": "high",
+      "description": "put() on an EXISTING key overwrites the value and returns early WITHOUT refreshing recency (it never touches self._order). Per the spec a write is a use, so the updated key should become most-recently-used; instead it keeps its old position and can be wrongly evicted as stale despite being just written. Correct: move the key to the end of _order on update.",
+      "lines": [
+        24
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "bespoke stateful interaction bug; no textbook pattern, no worked example"
+  }
+}

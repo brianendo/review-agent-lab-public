@@ -1,0 +1,29 @@
+"""A small LRU cache."""
+
+
+class LRUCache:
+    """Fixed-capacity cache that evicts the least-recently-USED entry when full.
+    Both reads (get) and writes (put) count as uses and make an entry the most
+    recently used."""
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self._store = {}
+        self._order = []   # least-recently-used first, most-recently-used last
+
+    def get(self, key):
+        if key not in self._store:
+            return None
+        self._order.remove(key)
+        self._order.append(key)
+        return self._store[key]
+
+    def put(self, key, value):
+        if key in self._store:
+            self._store[key] = value
+            return
+        if len(self._store) >= self.capacity:
+            evicted = self._order.pop(0)
+            del self._store[evicted]
+        self._store[key] = value
+        self._order.append(key)
