@@ -1,0 +1,137 @@
+diff --git a/cart.py b/cart.py
+--- a/cart.py
++++ b/cart.py
+@@ -0,0 +1,20 @@
++"""Shopping cart with a cached subtotal."""
++
++
++class Cart:
++    def __init__(self, customer):
++        self.customer = customer
++        self.items = []
++        self._subtotal = None
++
++    def add_item(self, sku, price, qty):
++        self.items.append({"sku": sku, "price": price, "qty": qty})
++        self._subtotal = None
++
++    def remove_item(self, sku):
++        self.items = [i for i in self.items if i["sku"] != sku]
++
++    def subtotal(self):
++        if self._subtotal is None:
++            self._subtotal = sum(i["price"] * i["qty"] for i in self.items)
++        return self._subtotal
+
+diff --git a/checkout.py b/checkout.py
+--- a/checkout.py
++++ b/checkout.py
+@@ -0,0 +1,36 @@
++"""Checkout orchestration."""
++
++from money import allocate
++from tax import tax_for
++from promo import is_valid, discount
++
++
++def checkout(cart, codes, promos, inventory, gateway, region, now_ts):
++    """Run an order end to end.
++
++    Spec:
++      - At most ONE promo code may be applied per order.
++      - Tax is charged on the POST-discount amount, in the given region.
++      - Inventory is reserved only AFTER payment succeeds, and a failed
++        reservation must abort the order.
++      - The amount charged is never negative.
++    """
++    sub = cart.subtotal()
++
++    disc = 0
++    for code in codes:
++        p = promos.get(code)
++        if p and is_valid(p, now_ts, sub):
++            disc += discount(sub, p)
++
++    taxable = sub
++    t = tax_for(taxable, region)
++    total = sub - disc + t
++
++    per_item_tax = allocate(t, [i["price"] * i["qty"] for i in cart.items])
++
++    for item in cart.items:
++        inventory.reserve(item["sku"], item["qty"])
++
++    gateway.charge(cart.customer, total)
++    return {"total": total, "tax": t, "per_item_tax": per_item_tax}
+
+diff --git a/inventory.py b/inventory.py
+--- a/inventory.py
++++ b/inventory.py
+@@ -0,0 +1,13 @@
++"""Stock reservations."""
++
++
++class Inventory:
++    def __init__(self, stock):
++        self.stock = dict(stock)
++
++    def reserve(self, sku, qty):
++        """Reserve `qty` of `sku`. Return True if reserved, False if insufficient."""
++        if self.stock.get(sku, 0) > qty:
++            self.stock[sku] -= qty
++            return True
++        return False
+
+diff --git a/money.py b/money.py
+--- a/money.py
++++ b/money.py
+@@ -0,0 +1,13 @@
++"""Money helpers. Amounts are integer cents unless stated."""
++
++
++def to_cents(dollars):
++    """Convert a dollar amount (float) to integer cents."""
++    return int(dollars * 100)
++
++
++def allocate(total, weights):
++    """Split `total` cents across positive integer weights, proportionally.
++    The returned parts must sum back to `total`."""
++    s = sum(weights)
++    return [round(total * w / s) for w in weights]
+
+diff --git a/promo.py b/promo.py
+--- a/promo.py
++++ b/promo.py
+@@ -0,0 +1,16 @@
++"""Promo codes."""
++
++
++def is_valid(promo, now_ts, order_total):
++    """True if `promo` may be applied to an order of `order_total` cents right now.
++    A promo has: expires_at (epoch secs), min_order (cents), kind, value."""
++    if promo["expires_at"] < now_ts:
++        return False
++    return True
++
++
++def discount(order_total, promo):
++    """Discount (cents) this promo grants on `order_total`."""
++    if promo["kind"] == "percent":
++        return order_total * promo["value"] // 100
++    return min(promo["value"], order_total)
+
+diff --git a/tax.py b/tax.py
+--- a/tax.py
++++ b/tax.py
+@@ -0,0 +1,9 @@
++"""Sales tax by region."""
++
++RATES_BPS = {"CA": 725, "NY": 800, "TX": 625}
++
++
++def tax_for(amount, region):
++    """Tax on `amount` cents for `region`, in cents."""
++    rate = RATES_BPS.get(region, 0)
++    return amount * rate // 10_000
+

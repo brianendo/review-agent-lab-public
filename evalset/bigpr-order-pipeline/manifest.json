@@ -1,0 +1,132 @@
+{
+  "diff_id": "bigpr-order-pipeline",
+  "repo": "synthetic-bigpr",
+  "source_commit": "hand-built large feature PR",
+  "task_spec": "Large feature PR: an order-checkout pipeline across money.py, tax.py, promo.py, cart.py, inventory.py, checkout.py. The end-to-end contract is in checkout.py's docstring; helper contracts are in each helper's docstring.",
+  "files": [
+    "money.py",
+    "tax.py",
+    "promo.py",
+    "cart.py",
+    "inventory.py",
+    "checkout.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "big-b1",
+      "file": "money.py",
+      "lines": [
+        6
+      ],
+      "category": "off-by-one",
+      "severity": "medium",
+      "difficulty": "subtle",
+      "description": "to_cents does int(dollars*100), truncating float error: to_cents(0.29) == 28, to_cents(1.1) == 109 (or similar), silently losing a cent on many values. Should round, e.g. round(dollars*100)."
+    },
+    {
+      "bug_id": "big-b2",
+      "file": "money.py",
+      "lines": [
+        13
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "allocate rounds each share independently, so the parts need NOT sum to `total` (violating its own docstring). Non-local: checkout uses it for per_item_tax, so the reported per-item taxes won't add up to the charged tax."
+    },
+    {
+      "bug_id": "big-b3",
+      "file": "tax.py",
+      "lines": [
+        8
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "Unknown region silently defaults to a 0% rate, so orders in an unconfigured region are charged NO tax instead of raising. Non-local: a bad `region` arriving at checkout produces a silently untaxed order."
+    },
+    {
+      "bug_id": "big-b4",
+      "file": "promo.py",
+      "lines": [
+        9
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "is_valid checks expiry but never enforces promo['min_order'] (documented in its own docstring), so a promo is applied even when the order is below its minimum-order threshold."
+    },
+    {
+      "bug_id": "big-b5",
+      "file": "cart.py",
+      "lines": [
+        15
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "remove_item mutates self.items but does NOT invalidate self._subtotal (unlike add_item). After a remove, subtotal() returns the STALE cached value. Non-local: checkout reads cart.subtotal() and charges the pre-removal amount."
+    },
+    {
+      "bug_id": "big-b6",
+      "file": "inventory.py",
+      "lines": [
+        10
+      ],
+      "category": "off-by-one",
+      "severity": "medium",
+      "difficulty": "subtle",
+      "description": "reserve uses `stock > qty`; it should be `>=`. Reserving exactly the available quantity fails, so a customer can never buy the last units in stock."
+    },
+    {
+      "bug_id": "big-b7",
+      "file": "checkout.py",
+      "lines": [
+        21
+      ],
+      "category": "logic-inversion",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "The loop applies discount for EVERY valid code, but the spec allows at most one promo per order \u2014 discounts stack."
+    },
+    {
+      "bug_id": "big-b8",
+      "file": "checkout.py",
+      "lines": [
+        26
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "taxable = sub taxes the PRE-discount subtotal; the spec says tax is on the post-discount amount (sub - disc). Over-taxes whenever a promo applies."
+    },
+    {
+      "bug_id": "big-b9",
+      "file": "checkout.py",
+      "lines": [
+        33
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "Inventory is reserved BEFORE gateway.charge (spec: only after payment), AND the return value of reserve() is ignored, so a failed reservation does not abort the order (spec requires it to). Two spec violations in one line."
+    },
+    {
+      "bug_id": "big-b10",
+      "file": "checkout.py",
+      "lines": [
+        35
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "total is charged with no guard that it is >= 0. With stacked discounts (b7) or an oversized promo, total = sub - disc + t can be negative, charging a negative amount. Spec: never negative."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-bigpr",
+    "model_cutoff_status": "na",
+    "note": "6-file, 10-bug dense PR with deep non-local root causes; built to stress even Opus (recall as fraction, coverage limit)"
+  }
+}
