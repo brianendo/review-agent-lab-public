@@ -1,0 +1,112 @@
+{
+  "diff_id": "megapr-fulfillment",
+  "repo": "synthetic-megapr",
+  "source_commit": "hand-built large complex PR",
+  "task_spec": "Large feature PR across an order-management system: add multi-warehouse fulfillment (services/fulfillment.py), split-shipment shipping (services/shipping.py), and refunds (services/refund.py); rework Inventory for warehouses; add refunded_total to Order; add fulfill/refund API endpoints; post refunds to the ledger. Helper and end-to-end contracts are in the docstrings.",
+  "files": [
+    "domain/order.py",
+    "services/inventory.py",
+    "adapters/ledger.py",
+    "api/orders.py",
+    "services/fulfillment.py",
+    "services/shipping.py",
+    "services/refund.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "mega-b1",
+      "file": "core/money.py",
+      "lines": [
+        29
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "allocate rounds each share independently, so parts need not sum to total (violates its docstring). Non-local: shipping.split_shipping relies on this to split shipping cost across shipments, so the split won't reconcile to the charged shipping."
+    },
+    {
+      "bug_id": "mega-b2",
+      "file": "services/checkout.py",
+      "lines": [
+        9
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "The PR rewrites Inventory.reserve to require a warehouse_id (reserve(warehouse_id, sku, qty)), but checkout.py (NOT in the diff) still calls reserve(sku, qty). The old 2-arg call now binds sku->warehouse_id and qty->sku, raising KeyError/misreserving. A distant caller broken by the signature change."
+    },
+    {
+      "bug_id": "mega-b3",
+      "file": "services/fulfillment.py",
+      "lines": [
+        10
+      ],
+      "category": "off-by-one",
+      "severity": "medium",
+      "difficulty": "subtle",
+      "description": "Capacity check uses `>` instead of `>=`, so a warehouse holding exactly the requested qty is skipped and can't fulfill the item."
+    },
+    {
+      "bug_id": "mega-b4",
+      "file": "services/fulfillment.py",
+      "lines": [
+        9
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "If no single warehouse has enough stock for an item, the inner loop finds no match and the item is SILENTLY dropped from the plan (no split across warehouses, no error). Orders are partially fulfilled with no signal."
+    },
+    {
+      "bug_id": "mega-b6",
+      "file": "services/refund.py",
+      "lines": [
+        7
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "refund never checks `amount` against the remaining refundable (order.paid_total - order.refunded_total), so it can refund more than was paid, and repeated refunds accumulate refunded_total beyond paid_total. No idempotency/cap."
+    },
+    {
+      "bug_id": "mega-b7",
+      "file": "api/orders.py",
+      "lines": [
+        6
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "fulfill_order never checks order.status == 'paid' before fulfilling and sets status='fulfilled', so an unpaid (or cancelled) order can be shipped."
+    },
+    {
+      "bug_id": "mega-b8",
+      "file": "adapters/ledger.py",
+      "lines": [
+        10
+      ],
+      "category": "logic-inversion",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "post_refund appends `amount.cents` (POSITIVE), but the ledger's own comment says negative = money out; a refund must be negative. Non-local: jobs/reconcile.py sums ledger entries as net revenue, so every refund is counted as additional revenue, overstating net revenue by twice the refund."
+    },
+    {
+      "bug_id": "mega-b9",
+      "file": "services/inventory.py",
+      "lines": [
+        8
+      ],
+      "category": "error-handling",
+      "severity": "medium",
+      "difficulty": "medium",
+      "description": "reserve indexes self.warehouses[warehouse_id] with no guard for an unknown warehouse_id, raising KeyError instead of returning False for an invalid warehouse."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-megapr",
+    "model_cutoff_status": "na",
+    "note": "~22-file repo, 8-file complex PR, 9 graded bugs incl deep non-local (allocate non-conservation, signature break of distant caller checkout.py, free-ship interaction, refund-sign break consumed by jobs/reconcile.py). Requires navigation; tests coverage limit at high complexity."
+  },
+  "notes": "mega-b5 (free-ship on pre-discount subtotal) removed: no model flagged it because discounts are not wired into the order flow in this codebase \u2014 an ambiguous seed. Reviewers also found several REAL unseeded bugs (plan_fulfillment never decrements stock -> oversell; fulfill_order's inventory param unused; split_shipping ZeroDivisionError; Inventory.__init__ signature break)."
+}

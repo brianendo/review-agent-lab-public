@@ -1,0 +1,126 @@
+diff --git a/adapters/ledger.py b/adapters/ledger.py
+--- a/adapters/ledger.py
++++ b/adapters/ledger.py
+@@ -5,3 +5,7 @@
+ 
+ def post_charge(order, amount):
+     entries.append((order.id, amount.cents))
++
++
++def post_refund(order, amount):
++    entries.append((order.id, amount.cents))
+
+diff --git a/api/orders.py b/api/orders.py
+--- a/api/orders.py
++++ b/api/orders.py
+@@ -1,6 +1,13 @@
+ """Order API endpoints."""
++from services.fulfillment import plan_fulfillment
++from services.refund import refund
+ 
+ 
+-def cancel_order(order):
+-    order.status = "cancelled"
+-    return order
++def fulfill_order(order, warehouses, inventory):
++    plan = plan_fulfillment(order, warehouses)
++    order.status = "fulfilled"
++    return plan
++
++
++def refund_order(order, amount, gateway):
++    return refund(order, amount, gateway)
+
+diff --git a/domain/order.py b/domain/order.py
+--- a/domain/order.py
++++ b/domain/order.py
+@@ -7,6 +7,7 @@
+     id: str
+     customer_id: str
+     region: str
+-    items: list
++    items: list                                  # list of {sku, price (Money), qty}
+     paid_total: Money = field(default_factory=Money.zero)
+-    status: str = "created"
++    status: str = "created"                      # created -> paid -> fulfilled
++    refunded_total: Money = field(default_factory=Money.zero)   # added by this PR
+
+diff --git a/services/fulfillment.py b/services/fulfillment.py
+--- a/services/fulfillment.py
++++ b/services/fulfillment.py
+@@ -0,0 +1,13 @@
++"""Assign order items to warehouses (new this PR)."""
++
++
++def plan_fulfillment(order, warehouses):
++    """Return {warehouse_id: [items]} assigning each item to a warehouse that
++    has enough stock. Each item goes to the first warehouse with stock."""
++    plan = {}
++    for item in order.items:
++        for wh in warehouses:
++            if wh.stock.get(item["sku"], 0) > item["qty"]:
++                plan.setdefault(wh.id, []).append(item)
++                break
++    return plan
+
+diff --git a/services/inventory.py b/services/inventory.py
+--- a/services/inventory.py
++++ b/services/inventory.py
+@@ -1,12 +1,13 @@
+-"""Stock reservations."""
++"""Warehouse-aware stock reservations (rewritten this PR for multi-warehouse)."""
+ 
+ 
+ class Inventory:
+-    def __init__(self, stock):
+-        self.stock = dict(stock)
++    def __init__(self, warehouses):
++        self.warehouses = warehouses   # id -> Warehouse
+ 
+-    def reserve(self, sku, qty):
+-        if self.stock.get(sku, 0) >= qty:
+-            self.stock[sku] -= qty
++    def reserve(self, warehouse_id, sku, qty):
++        wh = self.warehouses[warehouse_id]
++        if wh.stock.get(sku, 0) >= qty:
++            wh.stock[sku] -= qty
+             return True
+         return False
+
+diff --git a/services/refund.py b/services/refund.py
+--- a/services/refund.py
++++ b/services/refund.py
+@@ -0,0 +1,10 @@
++"""Order refunds (new this PR)."""
++from adapters.ledger import post_refund
++
++
++def refund(order, amount, gateway):
++    """Refund `amount` (Money) for `order`."""
++    gateway.refund(order.customer_id, amount)
++    order.refunded_total = order.refunded_total + amount
++    post_refund(order, amount)
++    return order.refunded_total
+
+diff --git a/services/shipping.py b/services/shipping.py
+--- a/services/shipping.py
++++ b/services/shipping.py
+@@ -0,0 +1,17 @@
++"""Shipping cost and per-shipment split (new this PR)."""
++from core.money import Money, allocate
++from config import FREE_SHIP_THRESHOLD, SHIP_FLAT
++from services.pricing import subtotal
++
++
++def shipping_cost(order):
++    sub = subtotal(order.items)
++    if sub.cents >= FREE_SHIP_THRESHOLD:
++        return Money.zero()
++    return Money(SHIP_FLAT)
++
++
++def split_shipping(cost, shipments):
++    """Split `cost` across shipments by item count; parts sum to cost."""
++    weights = [len(items) for items in shipments]
++    return allocate(cost, weights)
+
