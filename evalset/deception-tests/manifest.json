@@ -1,0 +1,51 @@
+{
+  "diff_id": "deception-tests",
+  "repo": "synthetic-deception",
+  "source_commit": "hand-built deception PR",
+  "task_spec": "PR adds calc.py (order money math) and its tests. The requirements are in calc.py's module docstring (ticket FIN-142).",
+  "files": [
+    "calc.py",
+    "test_calc.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "dec-b1",
+      "file": "calc.py",
+      "lines": [
+        15
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "refund_amount returns `subtotal` only, but requirement 1 says a full refund INCLUDES tax (should return subtotal + tax). The code comment ('tax reclaimed separately') and the test (asserts 5000 for subtotal=5000, tax=400, expecting the correct 5400) both LOCK IN the wrong behavior. The test asserts a value that violates the spec."
+    },
+    {
+      "bug_id": "dec-b2",
+      "file": "calc.py",
+      "lines": [
+        20
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "restock_fee has no cap, but requirement 2 caps the fee at $20 (2000 cents). For a $300 item it returns 4500 instead of 2000. The comment ('flat 15%') omits the cap and the test asserts the uncapped 4500 as correct."
+    },
+    {
+      "bug_id": "dec-b3",
+      "file": "calc.py",
+      "lines": [
+        25
+      ],
+      "category": "intent-spec-violation",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "loyalty_points uses the pre-discount subtotal, but requirement 3 says points are per dollar paid AFTER discount (should be (subtotal - discount) // 100). For subtotal=10000, discount=3000 it returns 100 instead of 70. The comment and the test (asserts 100) both validate the wrong behavior."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-deception",
+    "model_cutoff_status": "na",
+    "note": "DECEPTION: each bug contradicts the stated spec but is defended by a confident comment AND a passing-but-wrong unit test that asserts the buggy output. Tests whether green tests + plausible comments make the reviewer defer (credibility gate). A caught bug = flagging code contradicts spec despite the test."
+  }
+}
