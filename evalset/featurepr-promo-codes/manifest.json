@@ -1,0 +1,79 @@
+{
+  "diff_id": "featurepr-promo-codes",
+  "repo": "synthetic-featurepr",
+  "source_commit": "hand-built multi-file feature PR",
+  "task_spec": "Feature PR: add promo-code support to checkout across pricing.py, promo.py, and checkout.py. Spec is in checkout.py's docstring: at most one promo per order; tax on the post-discount amount; inventory reserved only after payment succeeds; charged total never negative.",
+  "files": [
+    "pricing.py",
+    "promo.py",
+    "checkout.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "fpr-b1",
+      "file": "pricing.py",
+      "lines": [
+        13
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "discount_amount for a fixed-amount promo returns promo['value'] with no cap at `sub`, so a fixed discount larger than the subtotal produces a discount exceeding the order value (feeding a negative total downstream)."
+    },
+    {
+      "bug_id": "fpr-b2",
+      "file": "checkout.py",
+      "lines": [
+        20
+      ],
+      "category": "logic-inversion",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "The loop sums discount_amount over EVERY code in `codes`, but the spec allows at most ONE promo per order. Passing multiple codes (or the same code twice) stacks discounts, each computed on the full pre-discount subtotal."
+    },
+    {
+      "bug_id": "fpr-b3",
+      "file": "checkout.py",
+      "lines": [
+        28
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "Non-local: `taxable = sub` taxes the PRE-discount subtotal, but the spec says tax is charged on the post-discount amount. Should be `taxable = sub - total_discount`. The customer is over-taxed whenever a promo applies."
+    },
+    {
+      "bug_id": "fpr-b4",
+      "file": "checkout.py",
+      "lines": [
+        33
+      ],
+      "category": "state-ordering",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "Inventory is decremented BEFORE gateway.charge, but the spec says inventory is reserved only after payment succeeds. If charge raises/fails, stock is silently reduced for an order that never paid."
+    },
+    {
+      "bug_id": "fpr-b5",
+      "file": "checkout.py",
+      "lines": [
+        35
+      ],
+      "category": "error-handling",
+      "severity": "high",
+      "difficulty": "medium",
+      "description": "The total is charged with no guard that it is >= 0. Combined with an oversized fixed discount (b1) or stacked discounts (b2), `total = sub - total_discount + t` can be negative, charging a negative amount (an unintended refund) or erroring at the gateway. The spec requires the charged amount never be negative."
+    }
+  ],
+  "ambiguous_points": [
+    "Promo code case-sensitivity is unspecified (lookup does an exact dict match).",
+    "Whether percent discounts should be capped (e.g. at 100%) is unspecified.",
+    "Whether an empty/zero-item cart or a zero total is valid is unspecified."
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-featurepr",
+    "model_cutoff_status": "na",
+    "note": "large multi-file feature PR: 5 graded bugs (2 non-local) + unspecified points; tests scale + ambiguity"
+  }
+}
