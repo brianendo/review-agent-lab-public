@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-percentile-interp",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Implement percentile(data, p) with linear interpolation matching numpy's default: the rank position is (N-1) * p/100, interpolating between the two surrounding order statistics. percentile([0,10,20,30], 50) must be 15.0.",
+  "files": [
+    "pct.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-percentile-interp-b1",
+      "file": "pct.py",
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "The rank uses len(s) * p/100 but the linear method requires (len(s)-1) * p/100. With N elements the interpolation index must span 0..N-1, not 0..N. percentile([0,10,20,30], 50) returns 20.0 with this code instead of the correct 15.0, and the error grows toward the high end (p=75 gives 30 instead of 22.5).",
+      "lines": [
+        8
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "subtle bug requiring reasoning/domain knowledge to catch"
+  }
+}

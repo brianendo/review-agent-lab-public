@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-business-days",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Implement add_business_days(start, n): the date n business days after start, counting only Monday-Friday and skipping Saturday and Sunday.",
+  "files": [
+    "bizdays.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-business-days-b1",
+      "file": "bizdays.py",
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "weekday() returns 0=Mon .. 5=Sat .. 6=Sun, so `<= 5` counts SATURDAY as a business day (only Sunday is skipped). The condition must be `< 5` (or `<= 4`). add_business_days(Friday, 1) returns Saturday instead of Monday, and the drift compounds over longer spans.",
+      "lines": [
+        11
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "subtle bug requiring reasoning/domain knowledge to catch"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-lower-bound",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Implement lower_bound(arr, x): the index of the FIRST element >= x in an ascending-sorted list (i.e. the leftmost position where x could be inserted to keep it sorted); return len(arr) if every element is < x.",
+  "files": [
+    "bounds.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-lower-bound-b1",
+      "file": "bounds.py",
+      "category": "off-by-one",
+      "severity": "high",
+      "description": "The comparison `arr[mid] <= x` computes UPPER bound, not lower bound: it advances past elements equal to x, so it returns the index of the first element STRICTLY GREATER than x. For lower_bound([1,2,2,3], 2) it returns 3 instead of the correct 1. The condition must be `arr[mid] < x`.",
+      "lines": [
+        9
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "subtle bug requiring reasoning/domain knowledge to catch"
+  }
+}

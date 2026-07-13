@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-rate-limiter",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Implement a rate limiter that allows at most `limit` requests within ANY `window_secs`-second sliding interval (no interval of that length may ever contain more than `limit` allowed requests).",
+  "files": [
+    "limiter.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-rate-limiter-b1",
+      "file": "limiter.py",
+      "category": "logic-inversion",
+      "severity": "high",
+      "description": "This is a FIXED-window counter, not a sliding window. It permits a burst of up to 2*limit requests across a window boundary: `limit` requests just before window_start+window_secs, then the counter resets and `limit` more immediately after \u2014 all within a single window_secs interval. The spec requires no window_secs interval ever exceed `limit`. A correct implementation needs a sliding log or token bucket.",
+      "lines": [
+        13
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "subtle bug requiring reasoning/domain knowledge to catch"
+  }
+}

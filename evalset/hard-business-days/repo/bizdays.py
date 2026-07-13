@@ -1,0 +1,13 @@
+"""Business-day date math."""
+from datetime import date, timedelta
+
+
+def add_business_days(start, n):
+    """Return the date `n` business days (Mon-Fri) after `start`, skipping weekends."""
+    d = start
+    added = 0
+    while added < n:
+        d += timedelta(days=1)
+        if d.weekday() <= 5:
+            added += 1
+    return d

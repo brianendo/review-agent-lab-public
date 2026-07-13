@@ -1,0 +1,27 @@
+{
+  "diff_id": "hard-compound-interest",
+  "repo": "synthetic-hard",
+  "source_commit": "hand-built hard case",
+  "task_spec": "Implement future_value(principal, annual_rate, years, periods_per_year): compound `principal` at `annual_rate` annual interest, compounded `periods_per_year` times a year, for `years` years. future_value(1000, 0.12, 1, 12) should be ~1126.83.",
+  "files": [
+    "finance.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "hard-compound-interest-b1",
+      "file": "finance.py",
+      "category": "logic-inversion",
+      "severity": "high",
+      "description": "The per-period rate is wrong: it applies the FULL annual_rate every period instead of annual_rate/periods_per_year. The standard formula is principal * (1 + annual_rate/periods_per_year) ** (years*periods_per_year). As written, future_value(1000, 0.12, 1, 12) returns ~3896 (12% compounded 12x = 261% growth) instead of ~1126.83.",
+      "lines": [
+        8
+      ]
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-hard",
+    "model_cutoff_status": "na",
+    "note": "subtle bug requiring reasoning/domain knowledge to catch"
+  }
+}
