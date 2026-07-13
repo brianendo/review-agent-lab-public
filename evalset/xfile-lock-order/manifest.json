@@ -1,0 +1,30 @@
+{
+  "diff_id": "xfile-lock-order",
+  "repo": "synthetic-xfile-lock-order",
+  "source_commit": "hand-built non-derivable case",
+  "task_spec": "PR: add concurrent money transfer (transfer.py) and a background audit reconciliation sweep (audit.py), both guarding the shared account/audit state with the global locks in locks.py.",
+  "files": [
+    "sync/locks.py",
+    "sync/transfer.py",
+    "sync/audit.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "lock-b1",
+      "file": "sync/audit.py",
+      "lines": [
+        7
+      ],
+      "category": "cross-file-invariant",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "transfer() acquires accounts_lock THEN audit_lock; reconcile() (on a background thread) acquires audit_lock THEN accounts_lock. Opposite ordering of the same two locks is a classic AB-BA deadlock: if transfer holds accounts_lock while reconcile holds audit_lock, both block forever. Neither file is wrong alone and no comment declares a lock order -- catching it requires comparing the two acquisition orders across files."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-nonderivable",
+    "model_cutoff_status": "na",
+    "note": "CROSS-FILE INVARIANT: each function is locally correct; the deadlock exists only in the RELATIONSHIP between two files' lock-acquisition orders. No stated contract."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "diff_id": "xfile-enum-desync",
+  "repo": "synthetic-xfile-enum-desync",
+  "source_commit": "hand-built non-derivable case",
+  "task_spec": "PR: make refunds a first-class order status. Adds REFUNDED to status.py and sets order.state = REFUNDED in process_refund, then notifies the customer.",
+  "files": [
+    "orders/status.py",
+    "orders/checkout.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "enum-b1",
+      "file": "orders/notify.py",
+      "lines": [
+        17
+      ],
+      "category": "cross-file-desync",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "The PR adds REFUNDED as a new status and sets order.state = REFUNDED, but the MESSAGES table in notify.py (NOT in the diff) has no REFUNDED entry, so MESSAGES.get(order.state, DEFAULT) falls through to the default -- which is 'Your order was delivered.' A refunded customer is told their order was delivered. Catching it requires cross-referencing the new enum value against the dispatch table in another (unchanged) file and noticing the wrong default. The generic-looking default hides it."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-nonderivable",
+    "model_cutoff_status": "na",
+    "note": "CROSS-FILE DESYNC: the new enum case has no branch in the dispatch table in another file, silently taking a wrong default. The stale table is OUTSIDE the diff."
+  }
+}

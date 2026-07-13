@@ -1,0 +1,23 @@
+diff --git a/orders/checkout.py b/orders/checkout.py
+--- a/orders/checkout.py
++++ b/orders/checkout.py
+@@ -1 +1,8 @@
+-"""Checkout."""
++"""Checkout marks an order refunded on a successful refund."""
++from orders import status
++from orders.notify import notify_customer
++
++
++def process_refund(order):
++    order.state = status.REFUNDED
++    notify_customer(order)
+
+diff --git a/orders/status.py b/orders/status.py
+--- a/orders/status.py
++++ b/orders/status.py
+@@ -3,3 +3,4 @@
+ PENDING = "pending"
+ SHIPPED = "shipped"
+ DELIVERED = "delivered"
++REFUNDED = "refunded"   # NEW in this PR: refunds are now a first-class status
+

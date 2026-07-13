@@ -1,0 +1,14 @@
+"""Seat inventory reservation."""
+from shop.db import get_remaining, decrement
+
+
+def reserve_seat(event_id, qty):
+    """Reserve `qty` seats for `event_id`. Returns True on success.
+
+    Refuses if fewer than `qty` seats remain so we never oversell.
+    """
+    remaining = get_remaining(event_id)
+    if remaining < qty:
+        return False
+    decrement(event_id, qty)
+    return True

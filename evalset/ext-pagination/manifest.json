@@ -1,0 +1,28 @@
+{
+  "diff_id": "ext-pagination",
+  "repo": "synthetic-ext-pagination",
+  "source_commit": "hand-built non-derivable case",
+  "task_spec": "PR: add fetch_all_transactions() to page through the Plaid /transactions endpoint and return the full list.",
+  "files": [
+    "sync/fetch_all.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "page-b1",
+      "file": "sync/fetch_all.py",
+      "lines": [
+        16
+      ],
+      "category": "external-invariant",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "The loop terminates on a SHORT page (len < limit), but the API returns a next_cursor to signal more data and MAY return fewer than `limit` items on a page that is not the last (server-side windowing, filtered/pending rows, cursor scans). The correct termination is `next_cursor is None`. As written, a single short-but-not-last page silently truncates the result -- missing transactions with no error. The code even fetches next_cursor but only uses it AFTER the wrong break. Requires knowing the pagination contract, not the code."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-nonderivable",
+    "model_cutoff_status": "na",
+    "note": "EXTERNAL API CONTRACT: 'short page == last page' is a wrong assumption about cursor pagination; correct termination is next_cursor is None. Not derivable from the code."
+  }
+}

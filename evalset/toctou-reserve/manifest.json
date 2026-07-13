@@ -1,0 +1,28 @@
+{
+  "diff_id": "toctou-reserve",
+  "repo": "synthetic-toctou-reserve",
+  "source_commit": "hand-built non-derivable case",
+  "task_spec": "PR: add reserve_seat() which refuses to oversell by checking remaining inventory before decrementing.",
+  "files": [
+    "shop/inventory.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "toctou-b1",
+      "file": "shop/inventory.py",
+      "lines": [
+        13
+      ],
+      "category": "toctou-race",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "reserve_seat reads remaining, checks it, THEN decrements as separate steps with no lock / atomic conditional update. Two concurrent requests for the last seat both read remaining=1, both pass the check, both decrement -> oversell (remaining goes negative). Correct on any single sequential read; wrong only under interleaving. Fix: atomic conditional decrement (e.g. UPDATE ... WHERE remaining >= qty) or a per-event lock. Not visible in a single-threaded reading of the function."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-nonderivable",
+    "model_cutoff_status": "na",
+    "note": "TOCTOU: the check-then-act gap is only a bug under concurrent interleaving; a single-threaded read of the function looks correct. Requires imagining the race."
+  }
+}

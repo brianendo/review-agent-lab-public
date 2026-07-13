@@ -1,0 +1,28 @@
+{
+  "diff_id": "ext-webhook-idem",
+  "repo": "synthetic-ext-webhook-idem",
+  "source_commit": "hand-built non-derivable case",
+  "task_spec": "PR: add the Stripe `payment_intent.succeeded` webhook handler. Marks the order paid and records the payment.",
+  "files": [
+    "billing/webhook.py"
+  ],
+  "bugs": [
+    {
+      "bug_id": "ext-idem-b1",
+      "file": "billing/webhook.py",
+      "lines": [
+        15
+      ],
+      "category": "external-invariant",
+      "severity": "high",
+      "difficulty": "hard",
+      "description": "The handler records a payment on every delivery with no idempotency key / dedup on event['id']. Stripe (and every payment provider) delivers webhooks AT-LEAST-ONCE and retries on any non-2xx or timeout, so a retried 'payment_intent.succeeded' double-records the payment / double-marks paid. The fix is to dedup on event['id'] (store processed IDs, no-op on repeat). Nothing in the diff says retries happen -- catching it requires knowing the external delivery contract."
+    }
+  ],
+  "provenance": {
+    "class": "clean",
+    "source": "synthetic-nonderivable",
+    "model_cutoff_status": "na",
+    "note": "EXTERNAL-INVARIANT: code is locally correct; the bug (missing idempotency) is only wrong because payment webhooks are at-least-once and retried. Not derivable from the diff -- requires external domain knowledge."
+  }
+}

@@ -1,0 +1,40 @@
+diff --git a/sync/audit.py b/sync/audit.py
+--- a/sync/audit.py
++++ b/sync/audit.py
+@@ -1 +1,10 @@
+ """Audit reconciliation sweep (runs on a background thread)."""
++from sync.locks import accounts_lock, audit_lock
++
++
++def reconcile(accounts):
++    # Recompute audit totals and cross-check against live balances.
++    with audit_lock:
++        with accounts_lock:
++            total = sum(a.balance for a in accounts)
++            _write_audit_total(total)
+
+diff --git a/sync/locks.py b/sync/locks.py
+--- a/sync/locks.py
++++ b/sync/locks.py
+@@ -0,0 +1,5 @@
++"""Global locks guarding the two shared account maps."""
++import threading
++
++accounts_lock = threading.Lock()
++audit_lock = threading.Lock()
+
+diff --git a/sync/transfer.py b/sync/transfer.py
+--- a/sync/transfer.py
++++ b/sync/transfer.py
+@@ -1 +1,10 @@
+ """Money transfer between accounts."""
++from sync.locks import accounts_lock, audit_lock
++
++
++def transfer(src, dst, amount):
++    with accounts_lock:
++        with audit_lock:
++            src.balance -= amount
++            dst.balance += amount
++            _append_audit(src, dst, amount)
+
