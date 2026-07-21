@@ -36,6 +36,46 @@ So context only changes outcomes at the margins.
 rationalizations reach the reviewer, and don't pay for more thinking — over a
 reviewer that's otherwise at ceiling.*
 
+## The numbers, briefly
+
+**Intent context moves exactly the arbitrary-rule bugs** (strict semantic
+scoring; a catch must describe the seeded bug):
+
+| case | the rule | diff only | + task spec |
+|---|---|---|---|
+| `intent-fee-floor` | fees floor to whole dollars | **0%** | **100%** |
+| `intent-round-nickel` | round up to nearest nickel | **0%** | **100%** |
+| `intent-retry-count` | exactly 5 attempts | **0%** | **100%** |
+| `intent-grade-cutoff` | 93/85/77 cutoffs | **0%** | **100%** |
+| `intent-tiebreak-id` | ties broken by ascending id | 100% | 100% |
+| `intent-window-exclusive` | window end exclusive | 100% | 100% |
+| `intent-tax-order` | discount before tax | 100% | 100% |
+
+The four the reviewer misses blind are precisely the rules that live nowhere in
+the code and nowhere in world knowledge. Rules that double as a general code
+smell it catches unaided.
+
+**More thinking buys nothing** (6-case subset, 2 trials/cell):
+
+| effort | recall | cost per true positive |
+|---|---|---|
+| low | 100% | **$0.23** |
+| medium | 100% | $0.45 |
+| high | 100% | $0.60 |
+
+**And the rest, one line each:**
+
+- **Contamination control:** bugs merged *after* the model's cutoff are caught
+  as reliably (100%) as famous old ones — the recall is capability, not memory.
+- **False positives:** ~0.8 findings per clean diff over 5 no-bug diffs.
+- **Model gradient:** appears only at multi-file scale with non-local root
+  causes — on a 22-file mega-PR, Haiku 5/8 vs Opus 7/8; on single-function
+  bugs, even Haiku is at ceiling.
+- **Deception:** wrong comments plus passing-but-wrong tests fooled **no**
+  model — reviewers re-derived the truth and said the tests were wrong.
+- **Non-derivable bugs:** 15/15 caught across three models
+  ([raw reports](runs/panel-nonderivable/INDEX.md)).
+
 ## Read more
 
 - **[WRITEUP.md](WRITEUP.md)** — the full narrative (motivation, rig, findings, limits)
