@@ -59,7 +59,9 @@ documented per-case in `evalset/*/manifest.json` and the commit log:
 - **Non-derivable bugs fail to hide.** Bugs whose wrongness isn't in the diff text
   (at-least-once webhooks, AB-BA lock order, TOCTOU, enum desync, pagination
   contract): 15/15 caught across Opus/Sonnet/Haiku — see
-  [NONDERIVABLE_RESULTS.md](evalset/NONDERIVABLE_RESULTS.md).
+  [NONDERIVABLE_RESULTS.md](evalset/NONDERIVABLE_RESULTS.md), replicated with
+  the 15 raw blind-reviewer reports committed in
+  [runs/panel-nonderivable/](runs/panel-nonderivable/INDEX.md).
 
 ## How it works
 
@@ -71,6 +73,21 @@ snapshot** of the repo at the commit. A two-stage scorer (deterministic location
 match + an audited LLM judge, run in strict semantic mode) turns findings into
 recall / precision / cost. Every case is tagged with training-contamination
 provenance against the model's knowledge cutoff.
+
+## Verify the numbers without an API key
+
+Every headline claim is recomputed from the committed run records on every CI
+push. To check them yourself:
+
+```bash
+python tools/verify_results.py    # no key, no network — reads runs/ only
+```
+
+It re-derives the intent 0%→100% table case by case, the flat-recall/2.6×-cost
+effort sweep, the pre- vs post-cutoff contamination control, the process-context
+drop, and the clean-diff false-positive count, and fails if any published number
+disagrees with the data. [EVALSET.md](EVALSET.md) catalogs all 49 cases
+(regenerated from the manifests by `tools/gen_evalset_md.py`).
 
 ## Reproduce
 

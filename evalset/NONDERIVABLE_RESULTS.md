@@ -15,7 +15,10 @@ bugs that require world-knowledge, cross-file synthesis, or imagining an interle
 
 ## Blind panel: 3 models × 5 cases = 15 reviews, neutral prompt, manifest withheld
 
-**Result: 15 / 15 caught.** Every model caught every bug.
+**Result: 15 / 15 caught.** Every model caught every bug. A 2026-07-20
+replication with the raw reviewer reports committed is in
+[`runs/panel-nonderivable/`](../runs/panel-nonderivable/INDEX.md) — also 15/15,
+including the same unseeded `ext-pagination` infinite-loop find.
 
 | case | Opus | Sonnet | Haiku |
 |------|:----:|:------:|:-----:|

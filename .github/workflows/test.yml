@@ -14,3 +14,5 @@ jobs:
           python-version: "3.12"
       - run: pip install -e . pytest
       - run: pytest tests/ -q
+      - name: verify published claims against committed run records
+        run: python tools/verify_results.py
