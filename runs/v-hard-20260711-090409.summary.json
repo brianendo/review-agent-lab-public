@@ -1,0 +1,38 @@
+{
+  "iteration": "v-hard",
+  "config": {
+    "iteration": "v-hard",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false,
+    "trace_mode": null
+  },
+  "config_hash": "53ac3906cf8a",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 1.0,
+    "cost_per_true_positive": 0.065635,
+    "total_bugs": 2,
+    "total_caught": 2
+  },
+  "per_diff": {
+    "hard-cache-key": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-mutable-default": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 19.8
+}

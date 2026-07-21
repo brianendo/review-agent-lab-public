@@ -1,0 +1,113 @@
+{
+  "iteration": "I0-validate",
+  "config": {
+    "iteration": "I0-validate",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "e36ca7bdc541",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.4230769230769231,
+    "cost_per_true_positive": 0.8231771428571429,
+    "total_bugs": 7,
+    "total_caught": 7
+  },
+  "per_diff": {
+    "backtest-loaders": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-briefing": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-env-load": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-integrations": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-retry-exits": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-sec-patterns": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "exit-validation": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "fmp-dedup": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "github-stars": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "llm-retry": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "sample-001": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "screener-jsonparse": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "sec-emdash": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 255.4
+}

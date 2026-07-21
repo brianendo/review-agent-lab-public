@@ -1,0 +1,36 @@
+{
+  "iteration": "real-I2a",
+  "config": {
+    "iteration": "real-I2a",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": true
+  },
+  "config_hash": "27b5fedfe663",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.25,
+    "cost_per_true_positive": 0.1226575,
+    "total_bugs": 2,
+    "total_caught": 2
+  },
+  "per_diff": {
+    "httpx-cancel-close": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.16666666666666666,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "requests-scheme": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.3333333333333333,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 36.4
+}

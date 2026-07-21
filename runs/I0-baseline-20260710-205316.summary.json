@@ -1,0 +1,50 @@
+{
+  "iteration": "I0-baseline",
+  "config": {
+    "iteration": "I0-baseline",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "6453da6bfff1",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.7083333333333334,
+    "cost_per_true_positive": 0.29363291666666663,
+    "total_bugs": 12,
+    "total_caught": 12
+  },
+  "per_diff": {
+    "backtest-loaders": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "llm-retry": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.8333333333333334,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "sample-001": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "screener-jsonparse": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 104.1
+}

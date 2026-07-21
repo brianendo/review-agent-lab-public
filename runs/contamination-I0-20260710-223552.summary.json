@@ -1,0 +1,50 @@
+{
+  "iteration": "contamination-I0",
+  "config": {
+    "iteration": "contamination-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "a8de02e34e7d",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.5,
+    "cost_per_true_positive": 0.22062,
+    "total_bugs": 12,
+    "total_caught": 12
+  },
+  "per_diff": {
+    "anyio-capacitylimiter-inf": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.6666666666666666,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "httpx-cancel-close": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.16666666666666666,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "pydantic-falsy-alias": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.8333333333333334,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "requests-scheme": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.3333333333333333,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 143.9
+}

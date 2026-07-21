@@ -4,8 +4,15 @@
 with the methodology Cognition's claim was missing.**
 
 One custom review-agent harness (Opus 4.8, read-only tools, full-repo context),
-run through controlled iterations against a 30-case seeded-bug evalset with strict,
-audited scoring. Every claim below is backed by a committed, reproducible run.
+run through controlled iterations against a seeded-bug evalset (62 cases and
+growing) with strict, audited scoring. Every claim below is backed by a
+committed, reproducible run record in `runs/`.
+
+> **This is the public subset of the lab.** 13 of the 62 cases are real diffs
+> from private repositories; their source snapshots and run records are withheld
+> here (49 cases ship in `evalset/`). Results tables that were measured on sets
+> including those cases say so inline; the metrics-only run summaries in `runs/`
+> cover every case, so the aggregate numbers still reconcile.
 
 ## The headline
 
@@ -32,7 +39,27 @@ reviewer that's otherwise at ceiling.*
 - **[WRITEUP.md](WRITEUP.md)** — the full narrative (motivation, rig, findings, limits)
 - **[RESULTS.md](RESULTS.md)** — the numbers and tables
 - **[INTERPRETATION.md](INTERPRETATION.md)** — plain-language reading + the Cognition verdict
-- **[architecture.md](architecture.md)** — the original design
+- **[evalset/NONDERIVABLE_RESULTS.md](evalset/NONDERIVABLE_RESULTS.md)** — the
+  non-derivable battery (external invariants, cross-file contracts, TOCTOU): 15/15
+  caught by a blind 3-model panel
+- **[NOTICE.md](NOTICE.md)** — licenses and attribution for the OSS snapshots in
+  the evalset
+
+## Later batteries (after the writeup)
+
+The evalset kept growing past the runs the writeup describes. Findings so far,
+documented per-case in `evalset/*/manifest.json` and the commit log:
+
+- **Scale doesn't break Opus.** A 6-file/10-bug PR, a ~16-file repo where the bug
+  is a distant un-updated caller outside the diff, and a ~22-file repo with an
+  8-file PR: Opus stays unbroken; a **model gradient** (Opus > Sonnet > Haiku)
+  finally appears on the large feature PRs.
+- **Deception fails.** A PR whose bugs are defended by confident comments *and*
+  passing-but-wrong unit tests fools **no** model.
+- **Non-derivable bugs fail to hide.** Bugs whose wrongness isn't in the diff text
+  (at-least-once webhooks, AB-BA lock order, TOCTOU, enum desync, pagination
+  contract): 15/15 caught across Opus/Sonnet/Haiku — see
+  [NONDERIVABLE_RESULTS.md](evalset/NONDERIVABLE_RESULTS.md).
 
 ## How it works
 
@@ -48,11 +75,15 @@ provenance against the model's knowledge cutoff.
 ## Reproduce
 
 ```bash
-uv venv && uv pip install -e .            # Python 3.12
+uv venv && uv pip install -e .            # Python 3.11+
 # put ANTHROPIC_API_KEY in .env
 python -m review_lab.run_once evalset/sample                     # one diff, end to end
 python -m review_lab.runner --cases <ids> --strict [--task-spec] [--trace full] [--effort high]
+python -m review_lab.runner --help                               # all flags
 ```
+
+Note: the runner makes real API calls; with no `--cases` filter it sweeps the
+entire evalset (62 cases × 3 trials).
 
 Each run writes a diffable JSONL record plus an aggregate summary to `runs/`.
 The harness is the artifact; the results table is the work sample.

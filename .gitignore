@@ -2,7 +2,5 @@
 __pycache__/
 *.pyc
 .env
-runs/*
-!runs/.gitkeep
 uv.lock
 .DS_Store

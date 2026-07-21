@@ -1,0 +1,29 @@
+{
+  "iteration": "probe-I0",
+  "config": {
+    "iteration": "probe-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "5c1d9f3eb799",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.5,
+    "cost_per_true_positive": 0.10476,
+    "total_bugs": 1,
+    "total_caught": 1
+  },
+  "per_diff": {
+    "intent-fee-floor": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 27.4
+}

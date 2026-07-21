@@ -1,0 +1,30 @@
+{
+  "iteration": "smoke",
+  "config": {
+    "iteration": "smoke",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": "low",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "fa659cce1582",
+  "overall": {
+    "micro_recall": null,
+    "macro_precision": null,
+    "cost_per_true_positive": null,
+    "total_bugs": 0,
+    "total_caught": 0
+  },
+  "per_diff": {
+    "sample": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": null,
+      "recall_std": 0.0,
+      "errors": 1
+    }
+  },
+  "wall_s": 0.2
+}

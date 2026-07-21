@@ -15,10 +15,10 @@ into one comparison table because the evalset, scorer, and record schema are fix
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import statistics
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass, field
@@ -204,25 +204,39 @@ def aggregate_and_print(cells: List[Cell], config: Config) -> Dict[str, Any]:
 
 
 def main(argv: Optional[list] = None) -> int:
-    argv = argv if argv is not None else sys.argv[1:]
+    parser = argparse.ArgumentParser(
+        prog="python -m review_lab.runner",
+        description="Run one iteration (a config) over the evalset, N trials per "
+                    "case, concurrently. Every cell is a real API call chain — "
+                    "the default invocation sweeps the whole evalset with spend.")
+    parser.add_argument("--trials", type=int, default=3,
+                        help="trials per case (default: 3)")
+    parser.add_argument("--workers", type=int, default=3,
+                        help="concurrent runs (default: 3)")
+    parser.add_argument("--judge", action="store_true",
+                        help="score findings with the LLM judge")
+    parser.add_argument("--strict", action="store_true",
+                        help="strict semantic scoring: a catch must describe the "
+                             "seeded bug, not just hit its location")
+    parser.add_argument("--cases", metavar="a,b,c",
+                        help="comma-separated case ids (default: all of evalset/)")
+    parser.add_argument("--iteration", default="I0-baseline",
+                        help="iteration label for the run record (default: I0-baseline)")
+    parser.add_argument("--effort", choices=list(EFFORT),
+                        help="I1 sweep: override thinking effort")
+    parser.add_argument("--trace", choices=["full", "summary"],
+                        help="I2b: attach the coder's trace from the manifest")
+    parser.add_argument("--task-spec", action="store_true",
+                        help="I2a: attach the task spec (intent context)")
+    args = parser.parse_args(argv)
 
-    def opt(name, default=None):
-        return argv[argv.index(name) + 1] if name in argv else default
-
-    trials = int(opt("--trials", "3"))
-    workers = int(opt("--workers", "3"))
-    use_judge = "--judge" in argv
-    strict = "--strict" in argv
-    only = opt("--cases")
-    only = only.split(",") if only else None
-    effort = opt("--effort")
-    if effort and effort not in EFFORT:
-        print(f"--effort must be one of {list(EFFORT)}")
-        return 1
-    trace_mode = opt("--trace")  # "full" or "summary"
-    config = Config(iteration=opt("--iteration", "I0-baseline"),
-                    use_task_spec="--task-spec" in argv, effort=effort,
-                    trace_mode=trace_mode)
+    trials = args.trials
+    workers = args.workers
+    use_judge = args.judge
+    strict = args.strict
+    only = args.cases.split(",") if args.cases else None
+    config = Config(iteration=args.iteration, use_task_spec=args.task_spec,
+                    effort=args.effort, trace_mode=args.trace)
 
     load_dotenv(REPO_ROOT / ".env")
     client = Anthropic()

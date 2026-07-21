@@ -1,0 +1,65 @@
+{
+  "iteration": "I1-high",
+  "config": {
+    "iteration": "I1-high",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": "high",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "3c2eb1a49a4c",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.5833333333333334,
+    "cost_per_true_positive": 0.598399375,
+    "total_bugs": 8,
+    "total_caught": 8
+  },
+  "per_diff": {
+    "clean-briefing": {
+      "trials": 2,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-integrations": {
+      "trials": 2,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-cache-stale": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-discount-tacit": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "llm-retry": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 0.75,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "screener-jsonparse": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 0.75,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 157.9
+}

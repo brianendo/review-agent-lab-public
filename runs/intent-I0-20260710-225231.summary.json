@@ -1,0 +1,57 @@
+{
+  "iteration": "intent-I0",
+  "config": {
+    "iteration": "intent-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "8e09a81dca04",
+  "overall": {
+    "micro_recall": 0.4,
+    "macro_precision": 0.3333333333333333,
+    "cost_per_true_positive": 0.24086583333333333,
+    "total_bugs": 15,
+    "total_caught": 6
+  },
+  "per_diff": {
+    "intent-fee-floor": {
+      "trials": 3,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-retry-count": {
+      "trials": 3,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-round-nickel": {
+      "trials": 3,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-tiebreak-id": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-window-exclusive": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.6666666666666666,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 96.7
+}

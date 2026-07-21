@@ -25,7 +25,8 @@ poka-yoke'd, read-only tool set: `read_file`, `list_files`, `grep_repo`,
 `get_diff`, and a single strict-schema `report_finding`. No bash, no network, no
 exec.
 
-- **Evalset (28 cases):** real diffs from private repos with hand-seeded bugs,
+- **Evalset (28 cases at the time of these runs; since grown to 62):** real
+  diffs from private repos with hand-seeded bugs,
   natural bugs reversed out of real OSS fix-PRs, a calibrated-hard bug borrowed
   from an RL-environments task, and synthetic cases engineered for specific
   difficulty. Six clean diffs (no seeded bug) measure the false-positive rate.

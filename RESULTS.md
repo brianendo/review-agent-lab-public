@@ -2,13 +2,15 @@
 
 Measured findings from the Review Agent Lab harness. Reviewer: `claude-opus-4-8`,
 adaptive thinking, read-only tool set, stable-prefix caching. Evalset: 26 cases
-(seeded + clean + natural OSS + synthetic hard/arbitrary), every case tagged with
-training-contamination provenance. Scoring: two-stage (deterministic location
+at the time of these runs (seeded + clean + natural OSS + synthetic
+hard/arbitrary), every case tagged with training-contamination provenance; the
+evalset has since grown to 62 — the later batteries are documented in
+`evalset/NONDERIVABLE_RESULTS.md` and the per-case manifests. Scoring: two-stage (deterministic location
 match + LLM judge), run in **strict semantic mode** for the results below — a
 finding counts as a catch only if the judge confirms it describes the seeded bug.
 
-All numbers are directional (small n, 2–3 trials per cell). Raw run records are in
-`runs/` (gitignored); the harness reproduces them from the evalset.
+All numbers are directional (small n, 2–3 trials per cell). Raw run records are
+committed in `runs/`; the harness reproduces them from the evalset.
 
 ---
 

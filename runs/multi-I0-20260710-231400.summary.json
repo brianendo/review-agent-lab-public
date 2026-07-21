@@ -1,0 +1,30 @@
+{
+  "iteration": "multi-I0",
+  "config": {
+    "iteration": "multi-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "463fc196c8f4",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 0.8095238095238095,
+    "cost_per_true_positive": 0.03473966666666666,
+    "total_bugs": 15,
+    "total_caught": 15
+  },
+  "per_diff": {
+    "multi-invoice": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 0.8095238095238095,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 65.8
+}

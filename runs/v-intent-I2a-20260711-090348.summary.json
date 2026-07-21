@@ -1,0 +1,38 @@
+{
+  "iteration": "v-intent-I2a",
+  "config": {
+    "iteration": "v-intent-I2a",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": true,
+    "trace_mode": null
+  },
+  "config_hash": "10b4354ce60e",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 1.0,
+    "cost_per_true_positive": 0.08192125,
+    "total_bugs": 4,
+    "total_caught": 4
+  },
+  "per_diff": {
+    "intent-grade-cutoff": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-tax-order": {
+      "trials": 2,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 48.6
+}

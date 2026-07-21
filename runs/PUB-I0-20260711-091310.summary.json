@@ -1,0 +1,213 @@
+{
+  "iteration": "PUB-I0",
+  "config": {
+    "iteration": "PUB-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false,
+    "trace_mode": null
+  },
+  "config_hash": "6dd5a38c64e0",
+  "overall": {
+    "micro_recall": 0.8333333333333334,
+    "macro_precision": 0.5385714285714286,
+    "cost_per_true_positive": 0.1740976,
+    "total_bugs": 30,
+    "total_caught": 25
+  },
+  "per_diff": {
+    "anyio-capacitylimiter-inf": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-click-zfs": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": null,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-rich-expandable": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-rich-linkids": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-slugify": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "clean-units": {
+      "trials": 1,
+      "recall_mean": null,
+      "precision_mean": null,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "click-choice-brackets": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-cache-key": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-cache-stale": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-discount-tacit": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-mutable-default": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "hard-orderbook-sorted": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "httpx-cancel-close": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.16666666666666666,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-fee-floor": {
+      "trials": 1,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-grade-cutoff": {
+      "trials": 1,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-retry-count": {
+      "trials": 1,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-round-nickel": {
+      "trials": 1,
+      "recall_mean": 0.0,
+      "precision_mean": 0.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-tax-order": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-tiebreak-id": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "intent-window-exclusive": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.5,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "multi-invoice": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.7142857142857143,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "multi-stats": {
+      "trials": 1,
+      "recall_mean": 0.8,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "pydantic-falsy-alias": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "requests-scheme": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.3333333333333333,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "rich-ansi-newlines": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 0.25,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "sample-001": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    },
+    "subtle-bsearch": {
+      "trials": 1,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 275.9
+}

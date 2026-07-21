@@ -1,6 +1,6 @@
 # Public results
 
-Measured on the 27-case **public** evalset (this repo), reviewer `claude-opus-4-8`, strict semantic scoring. Directional (1 trial for the master pass unless noted); reproduce with the runner. The narrative and the larger-set numbers are in `WRITEUP.md` / `RESULTS.md`.
+Measured on the 27-case **public** subset of the evalset as it stood at the time (the public subset has since grown to 49 cases), reviewer `claude-opus-4-8`, strict semantic scoring. Directional (1 trial for the master pass unless noted); reproduce with the runner. The narrative and the larger-set numbers are in `WRITEUP.md` / `RESULTS.md`.
 
 ## 1. In-diff bugs are caught at the ceiling
 

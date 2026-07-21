@@ -13,9 +13,9 @@ Writes one JSONL run record to runs/ and prints the findings table.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
-import sys
 import time
 from pathlib import Path
 from typing import Optional
@@ -98,8 +98,18 @@ def print_score(result, sr) -> None:
 
 
 def main(argv: Optional[list] = None) -> int:
-    argv = argv if argv is not None else sys.argv[1:]
-    diff_dir = Path(argv[0]) if argv else REPO_ROOT / "evalset" / "sample"
+    parser = argparse.ArgumentParser(
+        prog="python -m review_lab.run_once",
+        description="Review one diff end to end (one API call chain, real spend) "
+                    "and print + persist the result.")
+    parser.add_argument("diff_dir", nargs="?", default="evalset/sample",
+                        help="case directory containing diff.patch + repo/ "
+                             "(default: evalset/sample)")
+    parser.add_argument("--judge", action="store_true",
+                        help="score findings with the LLM judge (extra API calls)")
+    args = parser.parse_args(argv)
+
+    diff_dir = Path(args.diff_dir)
     if not diff_dir.is_absolute():
         diff_dir = (REPO_ROOT / diff_dir).resolve()
 
@@ -119,9 +129,8 @@ def main(argv: Optional[list] = None) -> int:
     print_findings(result, manifest)
 
     bugs = manifest.get("bugs", [])
-    use_judge = "--judge" in argv
-    sr = score(result.findings, bugs, client=client if use_judge else None,
-               use_judge=use_judge)
+    sr = score(result.findings, bugs, client=client if args.judge else None,
+               use_judge=args.judge)
     if bugs:
         print_score(result, sr)
 

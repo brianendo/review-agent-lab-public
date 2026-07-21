@@ -1,0 +1,30 @@
+{
+  "iteration": "subtle-I0",
+  "config": {
+    "iteration": "subtle-I0",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false
+  },
+  "config_hash": "8077c3a35d2d",
+  "overall": {
+    "micro_recall": 1.0,
+    "macro_precision": 1.0,
+    "cost_per_true_positive": 0.07984166666666666,
+    "total_bugs": 3,
+    "total_caught": 3
+  },
+  "per_diff": {
+    "subtle-bsearch": {
+      "trials": 3,
+      "recall_mean": 1.0,
+      "precision_mean": 1.0,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 26.2
+}

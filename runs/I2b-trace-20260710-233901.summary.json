@@ -1,0 +1,31 @@
+{
+  "iteration": "I2b-trace",
+  "config": {
+    "iteration": "I2b-trace",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false,
+    "trace_mode": "full"
+  },
+  "config_hash": "896db039656c",
+  "overall": {
+    "micro_recall": 0.8,
+    "macro_precision": 0.8888888888888888,
+    "cost_per_true_positive": 0.03656541666666666,
+    "total_bugs": 15,
+    "total_caught": 12
+  },
+  "per_diff": {
+    "multi-invoice": {
+      "trials": 3,
+      "recall_mean": 0.8,
+      "precision_mean": 0.8888888888888888,
+      "recall_std": 0.0,
+      "errors": 0
+    }
+  },
+  "wall_s": 61.3
+}

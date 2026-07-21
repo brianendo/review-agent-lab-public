@@ -1,0 +1,38 @@
+{
+  "iteration": "I2b2-diffonly",
+  "config": {
+    "iteration": "I2b2-diffonly",
+    "model": "claude-opus-4-8",
+    "thinking": "adaptive",
+    "effort": null,
+    "max_iterations": 30,
+    "cache_prefix": true,
+    "use_task_spec": false,
+    "trace_mode": null
+  },
+  "config_hash": "8950b6e17b32",
+  "overall": {
+    "micro_recall": 0.82,
+    "macro_precision": 0.8697619047619047,
+    "cost_per_true_positive": 0.030327439024390244,
+    "total_bugs": 50,
+    "total_caught": 41
+  },
+  "per_diff": {
+    "multi-invoice": {
+      "trials": 5,
+      "recall_mean": 0.88,
+      "precision_mean": 0.7895238095238095,
+      "recall_std": 0.0979795897113271,
+      "errors": 0
+    },
+    "multi-stats": {
+      "trials": 5,
+      "recall_mean": 0.76,
+      "precision_mean": 0.95,
+      "recall_std": 0.08000000000000003,
+      "errors": 0
+    }
+  },
+  "wall_s": 139.9
+}
