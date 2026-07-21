@@ -34,6 +34,14 @@ intended**, not when it merely asserts wrong facts. (This selectivity explains w
 other multi-bug cases, whose bugs weren't credibly defensible as intended, stayed
 flat.)
 
+*Replication note (2026-07-20):* a committed re-run
+([`runs/panel-process-context/`](runs/panel-process-context/INDEX.md))
+replicated the refutation half 6/6 but not the suppression delta — both arms
+scored 60% on `multi-stats`, the diff-only reviewers dismissing the spec-silent
+empty-list bugs unprompted. Read the 100%→60% as rig-dependent; what's stable
+is that traces never help and the only bugs in play are judgment calls the spec
+doesn't pin down.
+
 ## 4. False-positive rate (clean diffs)
 
 Over 5 clean diffs (no seeded bug), the reviewer produced **4 findings total (~0.8/diff)** — the pure false-positive signal.

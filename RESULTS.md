@@ -149,6 +149,22 @@ flat *because* their bugs weren't credibly defensible as intended — not becaus
 effect is random. (An early n=3 pilot's 100%→80% and a confounded two-rig 82%→74%
 both mis-sized this before the controlled runs isolated the mechanism.)
 
+**Replication with committed reports (2026-07-20,
+[`runs/panel-process-context/`](runs/panel-process-context/INDEX.md)).** A
+re-run of the controlled design (2 cases × 2 arms × 3 trials, all-Opus blind
+reviewers, verbatim reports committed) replicated the refutation half cleanly —
+the non-credible "summary row" defense and the trace's checkably-false
+arithmetic were refuted 6/6 — but **not the suppression delta**: on
+`multi-stats` *both* arms scored 60%, with every trial in both arms missing
+exactly the two empty-list bugs. The diff-only reviewers dismissed them
+unprompted ("no empty-handling is promised by the docstrings") — the task spec
+is silent on empty input, so their bug-status is genuinely a judgment call. The
+refined reading: on spec-silent judgment calls the reviewer's verdict is
+unstable across rigs, and a credible "it's intended" framing can only push it
+toward acceptance; on objective bugs it changes nothing. The suppression
+number (100%→60%) should be read as rig-dependent; the direction (traces never
+help, sometimes hurt) and the credibility gate are what replicate.
+
 ## 4. Effort buys nothing here (the token-economics result)
 
 I1 sweep (`output_config.effort`), 6-case subset, strict, 2 trials:

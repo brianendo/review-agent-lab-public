@@ -23,7 +23,7 @@ one heuristic into its parts, each measured:
 | Context you could share | Effect on the reviewer | Measured |
 |---|---|---|
 | **Intent** (the task spec) | **Helps — but only narrowly** | recall on arbitrary-rule bugs: **0% → 100%**; everything else already at ceiling |
-| **Process** (the coder's reasoning trace) | **Hurts selectively** | when it credibly reframes a bug as *intended*, recall **100% → 60%** (controlled) — the reviewer defers to "it's by design" but refutes checkably-false claims |
+| **Process** (the coder's reasoning trace) | **Can only hurt — and only on judgment calls** | on objective bugs the trace's defenses are refuted every time (6/6 in the [committed replication](runs/panel-process-context/INDEX.md)); on spec-silent judgment calls the verdict is rig-unstable — original controlled test **100% → 60%**, replication 60% in *both* arms |
 | **Effort** (make it think harder) | **Neutral** | recall flat, **2.6× the cost** |
 
 Underneath: a zero-context reviewer with repo access already catches ~**100%** of

@@ -88,7 +88,13 @@ the author's authority and reclassified real bugs as design choices. But it is
 caught all three. So process context transplants a blind spot **specifically when it
 credibly reframes a bug as intended behavior** — not when it merely asserts wrong
 facts. (An early pilot's 100→80 and a confounded two-rig 82→74 mis-sized this; the
-controlled test isolated the real, selective mechanism.)
+controlled test isolated the real, selective mechanism. A later committed
+replication — `runs/panel-process-context/` — reproduced the refutation half 6/6
+but found both arms at 60% on `multi-stats`: the diff-only reviewers dismissed
+the spec-silent empty-list bugs unprompted. So the suppression *size* is
+rig-dependent; what's stable is that the affected bugs are exactly the
+judgment calls the spec leaves open, and the trace can only push the verdict
+toward acceptance.)
 
 ### 5. Reasoning effort is wasted spend.
 
