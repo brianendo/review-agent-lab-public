@@ -1,5 +1,7 @@
 # Review Agent Lab
 
+[![tests + claim verification](https://github.com/brianendo/review-agent-lab-public/actions/workflows/test.yml/badge.svg)](https://github.com/brianendo/review-agent-lab-public/actions/workflows/test.yml)
+
 **Does giving a code-review agent more context make it better? A measured answer,
 with the methodology Cognition's claim was missing.**
 
