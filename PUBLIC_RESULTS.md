@@ -21,12 +21,12 @@ Across the 15 seeded cases whose bugs are detectable from the code (everything e
 
 The cases the reviewer misses without the spec are exactly those whose correct behavior is an *arbitrary* value (a magic threshold/rounding rule); rules that double as a general code smell it catches unaided.
 
-## 3. Process context (the coder's trace) — hurts selectively
+## 3. Process context (the coder's trace) hurts selectively
 
 Controlled test on `multi-stats` (blind same-Opus reviewer, neutral prompt, 3
 trials/arm): recall drops **100% → 60%** with the coder's trace attached. Every
 trial missed *exactly* the two bugs the trace framed as **intended** ("raises on
-empty input, which is correct") — the reviewer deferred to the author's "by design"
+empty input, which is correct"), the reviewer deferred to the author's "by design"
 claim and reclassified real bugs as choices. The same trace's *checkably-false*
 claims about three other bugs were refuted and caught every time. So the coder's
 reasoning transplants a blind spot specifically when it **credibly reframes a bug as
@@ -36,7 +36,7 @@ flat.)
 
 *Replication note (2026-07-20):* a committed re-run
 ([`runs/panel-process-context/`](runs/panel-process-context/INDEX.md))
-replicated the refutation half 6/6 but not the suppression delta — both arms
+replicated the refutation half 6/6 but not the suppression delta: both arms
 scored 60% on `multi-stats`, the diff-only reviewers dismissing the spec-silent
 empty-list bugs unprompted. Read the 100%→60% as rig-dependent; what's stable
 is that traces never help and the only bugs in play are judgment calls the spec
@@ -44,5 +44,5 @@ doesn't pin down.
 
 ## 4. False-positive rate (clean diffs)
 
-Over 5 clean diffs (no seeded bug), the reviewer produced **4 findings total (~0.8/diff)** — the pure false-positive signal.
+Over 5 clean diffs (no seeded bug), the reviewer produced **4 findings total (~0.8/diff)**, the pure false-positive signal.
 

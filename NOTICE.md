@@ -20,5 +20,5 @@ those licenses require for redistribution.
 
 Each "natural bug" case reverses a real merged fix from the linked project (the
 diff under review is the fix inverted); the linked PR/issue is recorded in the
-case manifest. No production secrets are included — snapshots are filtered to
+case manifest. No production secrets are included. Snapshots are filtered to
 source files and exclude data, `.git`, and environment files.

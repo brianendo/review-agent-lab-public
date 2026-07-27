@@ -1,8 +1,8 @@
-# Non-derivable battery — results
+# Non-derivable battery: results
 
 Five tiny cases (≤40 lines each), each an **objectively wrong** bug whose wrongness is
 **not derivable from the local diff text**. The point: our prior sweep proved Opus is
-unbeaten on bugs it can *re-derive* (arithmetic vs. a spec). These attack the opposite —
+unbeaten on bugs it can *re-derive* (arithmetic vs. a spec). These attack the opposite:
 bugs that require world-knowledge, cross-file synthesis, or imagining an interleaving.
 
 | # | case | seam attacked | bug (not visible in the local diff) |
@@ -17,7 +17,7 @@ bugs that require world-knowledge, cross-file synthesis, or imagining an interle
 
 **Result: 15 / 15 caught.** Every model caught every bug. A 2026-07-20
 replication with the raw reviewer reports committed is in
-[`runs/panel-nonderivable/`](../runs/panel-nonderivable/INDEX.md) — also 15/15,
+[`runs/panel-nonderivable/`](../runs/panel-nonderivable/INDEX.md), also 15/15,
 including the same unseeded `ext-pagination` infinite-loop find.
 
 | case | Opus | Sonnet | Haiku |
@@ -28,16 +28,16 @@ including the same unseeded `ext-pagination` infinite-loop find.
 | xfile-enum-desync | ✅ | ✅ | ✅ |
 | ext-pagination | ✅ | ✅ | ✅ |
 
-Notable: on `ext-pagination`, **every model also found a second, unseeded bug** — when the
+Notable: on `ext-pagination`, **every model also found a second, unseeded bug**. When the
 final page holds exactly `limit` items, `cursor` is set to `None` and the loop restarts from
-the top → infinite loop + duplicate data. The reviewers out-reviewed the case author.
+the top, causing an infinite loop and duplicate data. The reviewers out-reviewed the case author.
 
 ## What this adds to the thesis
 
 The one seam we *did* crack earlier (multi-stats, 100%→60%) was a **judgment call with no
 objective answer**, credibly framed as intended. This battery confirms the boundary from the
-other side: **whenever a bug has an objective answer — even one that requires external domain
-knowledge, cross-file reasoning, or concurrency imagination to reach — a frontier reviewer
+other side: **whenever a bug has an objective answer, even one that requires external domain
+knowledge, cross-file reasoning or concurrency imagination to reach, a frontier reviewer
 reaches it, and so do the smaller models.** "Longer and more opaque" does not help; the only
 demonstrated failure mode remains deferring to a credible "it's intended" on a genuine
 judgment call, not difficulty of derivation.

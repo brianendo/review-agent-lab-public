@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | `anyio-capacitylimiter-inf` | public-oss | post | 1 | public repo, fix merged 2026-06-27 after the 2026-01-31 model cutoff; post-cutoff, contamination-clean. |
 | `bigpr-order-pipeline` | synthetic-bigpr | na | 10 | 6-file, 10-bug dense PR with deep non-local root causes; built to stress even Opus (recall as fraction, coverage limit) |
-| `bigrepo-proration` | synthetic-bigrepo | na | 1 | ~16-file repo; the bug is a distant un-updated caller (renewal.py) NOT in the diff — catching it requires navigating the repo to find all callers of the changed function. Tests repo-scale navigation, not inline review. |
+| `bigrepo-proration` | synthetic-bigrepo | na | 1 | ~16-file repo; the bug is a distant un-updated caller (renewal.py) NOT in the diff, so catching it requires navigating the repo to find all callers of the changed function. Tests repo-scale navigation, not inline review. |
 | `clean-click-zfs` | public-oss-clean | post | 0 | real OSS change merged 2026-05-28 (post-cutoff), presumed correct; measures false-positive rate |
 | `clean-rich-expandable` | public-oss-clean | post | 0 | real OSS change merged 2026-04-11 (post-cutoff), presumed correct; measures false-positive rate |
 | `clean-rich-linkids` | public-oss-clean | post | 0 | real OSS change merged 2026-02-26 (post-cutoff), presumed correct; measures false-positive rate |
